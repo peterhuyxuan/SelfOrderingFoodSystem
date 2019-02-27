@@ -15,13 +15,16 @@ The aim of this group project is to enable students to consolidate their knowled
 
 ### Due Dates:
 
--   Milestone 1: 11:59 pm Sunday 11th March (Week 4) (Feedback: Week 4 Lab Session)
+- Milestone 1: 11:59 pm Sunday 11th March, Week 3  
+     (Feedback: Week 4 Lab Session)
 
--   Milestone 2: 11:59 pm Monday 8th April (Week 7) ( Demo to tutors and tutor feedback: Week 7 Lab)
+- Milestone 2: 11:59 pm Sunday 7th April, Week 6
+    ( Demo to tutors and tutor feedback: Week 7 Lab)
 
--   Milestone 3: Final milestone: 11:59 pm Monday 22nd April ( Week 10) (Presentation to class: Week 10 Lab)
+- Milestone 3: 11:59 pm Sunday 21st April, Week 9
+  (Presentation to class: Week 10 Lab)
 
--   Project Report and Moodle Peer assessment: 11:59PM Sunday 29 April
+- Project Report and Moodle Peer assessment: 11:59PM Sunday 29 April, Week 10
 
 ### Value: 25%
 
