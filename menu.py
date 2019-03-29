@@ -1,4 +1,5 @@
 from menu_item import Bun, Patty, OtherIngredient, Side, Drink
+from main import Main
 class Menu():
  
     def __init__(self, items = None):
@@ -56,8 +57,6 @@ class Menu():
                 raise ItemNotFound(item_id)
             except ItemNotFound as e:
                 print(e)
-            
-            
         
     def __len__(self):
         res = 0
@@ -69,8 +68,15 @@ class Menu():
         for catagory in self._catagories: 
             for item in getattr(self,catagory):
                 print(item)
-            
 
+    def get_item(self, item_id):
+        for catagory in self._catagories:
+            current_catagory = getattr(self, catagory)
+            for item in current_catagory:
+                if item.id == item_id:
+                    return item
+            
+        return None
 
     # Properties
     @property

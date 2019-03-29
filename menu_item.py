@@ -28,6 +28,10 @@ class MenuItem(ABC):
     def name(self):
         return self._name
     
+    @property
+    def id(self):
+        return self._id
+    
     
 class Bun(MenuItem):
     def __init__(self, name, price, components):
