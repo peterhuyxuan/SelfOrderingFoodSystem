@@ -9,7 +9,7 @@ class Main(ABC):
         self._num_buns = 0
         self._num_patties = 0
         self._num_others = 0
-        
+        self._price = 0
 
     def add_item(self, item, qty, inventory_level):
         '''
@@ -36,6 +36,7 @@ class Main(ABC):
             raise TypeError(f"{item.__class__.__name__} is not a valid ingredient")
         
         self._components[item.id] = qty
+        self._price += qty * item.price
 
     def update_qty(self, item, qty, inventory_level):
         '''
@@ -45,7 +46,7 @@ class Main(ABC):
         '''
         if item.id not in self._components.keys():
             raise ValueError(f"item({item}) is not in the components")
-
+        
         if isinstance(item, Bun):
             new_qty = qty - self._components[item.id] + self._num_buns
             if not self._valid_bun_qty(qty + new_qty, inventory_level):
@@ -64,22 +65,17 @@ class Main(ABC):
         else:
             raise TypeError(f"{item.__class__.__name__} is not a valid ingredient")
         
+        self._price += (qty - self._components[item.id]) * item.price
         self._components[item.id] = qty
+        
 
 
     def remove_item(self, item):
         if item.id in self._components.keys():
-            del self._components[item.id]
+            qty = self._components.pop(item.id)
+            self._price  -= item.price * qty
         else:
-            raise ValueError(f"{item.id} not found in _components")
-
-    def calculate_price(self, menu):
-        price = 0
-        for item_id, qty  in self._components:
-            component = menu.get_item(item_id)
-            price += component.price * qty
-
-        return price
+            raise ValueError(f"{item.id} not found in components")
 
 
     @abstractmethod
@@ -99,7 +95,6 @@ class Main(ABC):
         return (f"<Name:{self._name}, Buns: {self._num_buns}, "
                 f"Patties: {self._num_patties}>, Others = {self._num_others}")
 
-
     # properties
     @property
     def components(self):
@@ -108,6 +103,10 @@ class Main(ABC):
     @property
     def name(self): 
         return self._name
+
+    @property
+    def price(self):
+        return self._price
 
 
 
