@@ -5,13 +5,13 @@ from main import Main
 class Menu():
  
     def __init__(self, items = None):
-        self._main = []
+        self._main = ("Burger", "Wrap")
         self._buns = []
         self._patties = []
         self._other_ingredients = []
         self._sides = []
         self._drinks = []
-        self._catagories = ('_main', '_buns', '_patties', 
+        self._catagories = ('_buns', '_patties', 
                                 '_other_ingredients',
                                 '_sides', '_drinks')
         
@@ -20,9 +20,7 @@ class Menu():
                 self.add_item(item)
 
     def add_item(self, item):
-        if isinstance(item, Main):
-            self._main.append(item)
-        elif isinstance(item, Bun):
+        if isinstance(item, Bun):
             self._buns.append(item)
         elif isinstance(item, Patty):
             self._patties.append(item)
@@ -55,19 +53,18 @@ class Menu():
 
         # prompt user if item is not found in the menue
         if removal_flag == False:
-            try:
-                raise ItemNotFound(item_id)
-            except ItemNotFound as e:
-                print(e)
+            raise ItemNotFound(item_id)
+
         
     def __len__(self):
         res = 0
         for catagory in self._catagories:
             res += len(getattr(self, catagory))
-        return res
+        return res + 2 
 
     def show(self):
         for catagory in self._catagories: 
+            print(catagory)
             for item in getattr(self,catagory):
                 print(item)
 
@@ -103,7 +100,7 @@ class Menu():
 
     @property
     def drinks(self):
-        return self._sides
+        return self._drinks
 
 
 class ItemNotFound(Exception):
