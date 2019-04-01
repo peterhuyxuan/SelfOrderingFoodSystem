@@ -1,10 +1,9 @@
 from menu_item import Bun, Patty, OtherIngredient, Side, Drink
 from main import Main
 
-
 class Menu():
  
-    def __init__(self, items = None):
+    def __init__(self):
         self._main = ("Burger", "Wrap")
         self._buns = []
         self._patties = []
@@ -15,86 +14,30 @@ class Menu():
                                 '_other_ingredients',
                                 '_sides', '_drinks')
         
-        if items is not None and len(items) != 0:
-            for item in items:
-                self.add_item(item)
-
     def add_patty(self, name, price, component, qty):
-        errs = self._check_field(name, price, component, qty)
-        try:
-            if len(errs) > 0:
-                raise InvalidField(''.join(errors))
-        except InvalidField as e:
-            print(e)
-            print("Nothing is added")
-        else:
-            item = Patty(name, price, component, qty)
-            self._patties.append(item)
+        self._check_name_exists(name)
+        item = Patty(name, price, component, qty)
+        self._patties.append(item)
 
     def add_bun(self, name, price, component, qty):
-        errs = self._check_field(name, price, component, qty)
-        try:
-            if len(errs) > 0:
-                raise InvalidField(''.join(errors))
-        except InvalidField as e:
-            print(e)
-            print("Nothing is added")
-        else:
-            item = Bun(name, price, component, qty)
-            self._buns.append(item)
+        self._check_name_exists(name)
+        item = Bun(name, price, component, qty)
+        self._buns.append(item)
 
     def add_side(self, name, price, component, qty):
-        errs = self._check_field(name, price, component, qty)
-        try:
-            if len(errs) > 0:
-                raise InvalidField(''.join(errors))
-        except InvalidField as e:
-            print(e)
-            print("Nothing is added")
-        else:
-            item = Side(name, price, component, qty)
-            self._buns.append(item)
+        self._check_name_exists(name)
+        item = Side(name, price, component, qty)
+        self._sides.append(item)
 
     def add_drink(self, name, price, component, qty):
-        errs = self._check_field(name, price, component, qty)
-        try:
-            if len(errs) > 0:
-                raise InvalidField(''.join(errors))
-        except InvalidField as e:
-            print(e)
-            print("Nothing is added")
-        else:
-            item = Drink(name, price, component, qty)
-            self._drinks.append(item)
+        self._check_name_exists(name)
+        item = Drink(name, price, component, qty)
+        self._drinks.append(item)
 
     def add_other(self, name, price, component, qty):
-        errs = self._check_field(name, price, component, qty)
-        try:
-            if len(errs) > 0:
-                raise InvalidField(''.join(errors))
-        except InvalidField as e:
-            print(e)
-            print("Nothing is added")
-        else:
-            item = OtherIngredient(name, price, component, qty)
-            self._other_ingredients.append(item)
-
-
-    def _check_field(name, price, component, qty):
-        error_messages = []
-        if (name is None or len(name) == 0 or str.isspace(name)):
-            error_messages.append("Please specify item name\n")
-        
-        if price <= 0:
-            error_messages.append("Please specify a valid price\n")
-        
-        if component is None or not isinstance(component, InventoryItem):
-            error_messages.append("Please specify a valid component\n")
-
-        if qty <= 0:
-            error_messages.append("Please specigy a valid price\n")
-        
-        return error_messages          
+        self._check_name_exists(name)
+        item = OtherIngredient(name, price, component, qty)
+        self._other_ingredients.append(item)
         
     def remove_item(self, item_id : int):
         """
@@ -138,6 +81,16 @@ class Menu():
                     return item
             
         return None
+    
+    def _check_name_exists(self, name):
+        for catagory in self._catagories:
+            current_catagory = getattr(self, catagory)
+            for item in current_catagory:
+                if name == item.name:
+                    raise AddingError
+
+
+
 
     # Properties
     @property
@@ -164,8 +117,6 @@ class Menu():
     def drinks(self):
         return self._drinks
 
-
-
 class ItemNotFound(Exception):
     def __init__(self, item_id):
         self._item_id = item_id
@@ -174,9 +125,10 @@ class ItemNotFound(Exception):
         return f"item ({self._item_id}) is not found in the menu"
 
 
-class InvalidField(Exception):
-    def __init__(self, message):
-        self._message = message
+class AddingError(Exception):
+    def __init__(self, name, reason):
+        self._name = name
+        self._reason = reason
 
     def __str__(self):
-        return self._message
+        return (f"adding {self._name} failed: {self._reason}")

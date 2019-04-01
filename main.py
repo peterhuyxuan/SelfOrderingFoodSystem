@@ -21,25 +21,13 @@ class Main(ABC):
             raise ValueError(f"item({item}) is already in the components")
 
         if isinstance(item, Bun):
-            if not self._valid_bun_qty(item, 
-                                        qty,
-                                        qty + self._num_buns, 
-                                        inventory_level):
-                raise InvalidQuantityException("Buns", qty)
+            self._valid_bun_qty(item, qty, qty + self._num_buns)
             self._num_buns += qty
         elif isinstance(item, Patty):
-            if not self._valid_patty_qty(item,
-                                            qty, 
-                                            qty + self._num_patties, 
-                                            inventory_level):
-                raise InvalidQuantityException("Patties", qty)
+            self._valid_patty_qty(item, qty, qty + self._num_patties)
             self._num_patties += qty
         elif isinstance(item, OtherIngredient):
-            if not self._valid_other_qty(item, 
-                                            qty,
-                                            qty + self._num_others, 
-                                            inventory_level):
-                raise InvalidQuantityException("Other ingredient", qty)
+            self._valid_other_qty(item, qty, qty + self._num_others)
             self._num_others += qty
         else:
             raise TypeError(f"{item.__class__.__name__} is not a valid ingredient")
@@ -52,37 +40,31 @@ class Main(ABC):
         change an item's quantity to a new quantity 
         if item is not in the components
         an exception will be raised
-
-        TODO: EXTRA CHECK MUST BE DONE
         '''
+
         if item.id not in self._components.keys():
             raise ValueError(f"item({item}) is not in the components")
         
         if isinstance(item, Bun):
             new_qty = qty - self._components[item.id] + self._num_buns
-            if not self._valid_bun_qty(item, qty,
-                                        new_qty, inventory_level):
-                raise InvalidQuantityException("Buns", qty)
+            self._valid_bun_qty(item, qty, new_qty)
             self._num_buns = new_qty
             self.check_min_buns()
         elif isinstance(item, Patty):
             new_qty = qty - self._components[item.id] + self._num_patties
-            if not self._valid_patty_qty(item, qty, 
-                                        new_qty, inventory_level):
-                raise InvalidQuantityException("Patties", qty)
+            self._valid_patty_qty(item, qty, new_qty)
             self._num_patties = new_qty
             self.check_min_patties()
         elif isinstance(item, OtherIngredient):
             new_qty = qty - self._components[item.id] + self._num_others
-            if not self._valid_other_qty(item, qty,
-                                        new_qty,inventory_level):
-                raise InvalidQuantityException("Other ingredient", qty)
+            self._valid_other_qty(item, qty, new_qty)
             self._num_others = new_qty
         else:
             raise TypeError(f"{item.__class__.__name__} is not a valid ingredient")
         
         self._price += (qty - self._components[item.id]) * item.price
         self._components[item.id] = qty   
+        
     def remove_item(self, item):
         if item.id in self._components.keys():
             qty = self._components.pop(item.id)
@@ -98,21 +80,49 @@ class Main(ABC):
         else:
             raise ValueError(f"{item} not found in components")
 
-    def _valid_bun_qty(self, item, qty, total, inventory_level):
-        if qty < 1 or total > self._max_bun() or qty > inventory_level:
-            return False
-        return True
+    def _valid_bun_qty(self, item, qty, total):
+        '''
+        qty should be at least 1 in order to add or update
+        total: total number of buns should not be greater than the maximal allowance
+        '''
+        if qty < 1:
+            raise InvalidQuantityException("buns",qty, "less than 1")
+            
+        if qty > item.component.quantity:
+            raise InvalidQuantityException("buns", qty, "Insufficient stock")
 
-    def _valid_patty_qty(self, item, qty, total, inventory_level):
-        if (qty < 1 or total > self._max_patties() 
-            or qty > inventory_level):
-            return False
-        return True
+        if  total > self._max_bun():
+            raise InvalidQuantityException("buns",qty, "Greater than maximal allowance")
+            
 
-    def _valid_other_qty(self, item, qty, total, inventory_level):
-        if qty < 1 or total > self._max_others() or qty > inventory_level:
-            return False
-        return True
+
+    def _valid_patty_qty(self, item, qty, total):
+        '''
+        qty should be at least 1 in order to add or update
+        total: total number of patties should not be greater than the maximal allowance
+        '''
+        if qty < 1:
+            raise InvalidQuantityException("patty",qty, "less than 1")
+            
+        if qty > item.component.quantity:
+            raise InvalidQuantityException("patty", qty, "Insufficient stock")
+
+        if  total > self._max_patties():
+            raise InvalidQuantityException("patty",qty, "Greater than maximal allowance")
+
+    def _valid_other_qty(self, item, qty, total):
+        '''
+        qty should >= 1 and <= tock levrl in order to add or update
+        total: total number of otheer should not be greater than the maximal allowance
+        '''
+        if qty < 1:
+            raise InvalidQuantityException("other",qty, "less than 1")
+            
+        if qty > item.component.quantity:
+            raise InvalidQuantityException("other", qty, "Insufficient stock")
+
+        if  total > self._max_others():
+            raise InvalidQuantityException("other",qty, "Greater than maximal allowance")
 
     @abstractmethod
     def __str__(self):
@@ -222,9 +232,10 @@ class Wrap(Main):
 
 
 class InvalidQuantityException(Exception):
-    def __init__(self, field_name, quantity):
+    def __init__(self, field_name, quantity, reason):
         self._field_name = field_name
         self._quantity = quantity
+        self._reason = reason
 
     def __str__(self):
-        return (f'Invaild number for {self._field_name} (quantity = {self._quantity})')
+        return (f'Invaild {self._field_name} (qty: {self._quantity}): {self._reason}')
