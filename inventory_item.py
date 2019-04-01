@@ -29,17 +29,4 @@ class inventoryItem(ABC):
         
     def __str__(self):
         return f'Item <{self.name}, {self.quantity}, {self.price}, {self.ivid}>'
-        
-class Sides:
-    def __init__(self, name, quantity, price, ivid):
-        super().__init__(name, quantity, price, ivid)
-    
-    def __str__(self):
-        return f'Item <{self.name}, {self.quantity}g, {self.price}, {self.ivid}>'
-        
-class Drink:
-    def __init__(self, name, quantity, price, ivid):
-        super().__init__(name, quantity, price, ivid)
-    
-    def __str__(self):
-        return f'Item <{self.name}, {self.quantity}ml, {self.price}, {self.ivid}>'
+
