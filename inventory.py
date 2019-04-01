@@ -20,3 +20,16 @@ class inventory():
                 if inventoryItem.name == name:
                     print(item)
 
+    '''
+    Registeration Services
+    '''
+
+    def add_item(self, inventoryItem):
+        self._item.append(inventoryItem)
+
+    '''
+    Properties
+    '''
+    @property
+    def item(self):
+        return self._item
