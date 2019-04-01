@@ -33,3 +33,18 @@ def test_full_search(capsys):
         "Item <Tomato, 100, 5, 4>\n"
         "Item <Patty, 100, 5, 5>\n")
     assert res.out == expected_output
+
+def test_null_search(capsys):
+    #This checks if the system can skip the read
+    system = setup_system()
+    system.item_search("Onion")
+    res = capsys.readouterr()
+    expected_output = ("")
+    assert res.out == expected_output
+
+def test_one_search(capsys):
+    system = setup_system()
+    system.item_search("Tomato")
+    res = capsys.readouterr()
+    expected_output = ("Item <Tomato, 100, 5, 4>\n")
+    assert res.out == expected_output

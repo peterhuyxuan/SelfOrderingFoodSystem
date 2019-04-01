@@ -17,7 +17,7 @@ class inventory():
 
         else:
             for item in self._item:
-                if inventoryItem.name == name:
+                if item.name == name:
                     print(item)
 
     '''
