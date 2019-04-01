@@ -1,6 +1,6 @@
 import pytest
 from menu import Menu, ItemNotFound
-from menu_item import Side, Drink, Patty, OtherIngredient, Bun, MenuItem
+from menu_item import *
 
 
 class InventoryObject:
@@ -61,6 +61,7 @@ def test_create_other():
 
 def test_invalid_price():
     inv_item = InventoryObject("test item", 1)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidFieldError):
         s = OtherIngredient("other-1", -10, inv_item, 7)
+
 

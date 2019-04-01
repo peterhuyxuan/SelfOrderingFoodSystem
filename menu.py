@@ -1,10 +1,9 @@
 from menu_item import Bun, Patty, OtherIngredient, Side, Drink
 from main import Main
 
-
 class Menu():
  
-    def __init__(self, items = None):
+    def __init__(self):
         self._main = ("Burger", "Wrap")
         self._buns = []
         self._patties = []
@@ -15,25 +14,31 @@ class Menu():
                                 '_other_ingredients',
                                 '_sides', '_drinks')
         
-        if items is not None and len(items) != 0:
-            for item in items:
-                self.add_item(item)
+    def add_patty(self, name, price, component, qty):
+        self._check_name_exists(name)
+        item = Patty(name, price, component, qty)
+        self._patties.append(item)
 
-    def add_item(self, item):
-        if isinstance(item, Bun):
-            self._buns.append(item)
-        elif isinstance(item, Patty):
-            self._patties.append(item)
-        elif isinstance(item, OtherIngredient):
-            self._other_ingredients.append(item)
-        elif isinstance(item, Side):
-            self._sides.append(item)
-        elif isinstance(item, Drink):
-            self._drinks.append(item)
-        else: 
-            raise TypeError(f"You could not add {item.__class__} into menu as"
-                        " it's not <MenuItem>")
+    def add_bun(self, name, price, component, qty):
+        self._check_name_exists(name)
+        item = Bun(name, price, component, qty)
+        self._buns.append(item)
 
+    def add_side(self, name, price, component, qty):
+        self._check_name_exists(name)
+        item = Side(name, price, component, qty)
+        self._sides.append(item)
+
+    def add_drink(self, name, price, component, qty):
+        self._check_name_exists(name)
+        item = Drink(name, price, component, qty)
+        self._drinks.append(item)
+
+    def add_other(self, name, price, component, qty):
+        self._check_name_exists(name)
+        item = OtherIngredient(name, price, component, qty)
+        self._other_ingredients.append(item)
+        
     def remove_item(self, item_id : int):
         """
         remove the item with item_id from the menu
@@ -76,6 +81,16 @@ class Menu():
                     return item
             
         return None
+    
+    def _check_name_exists(self, name):
+        for catagory in self._catagories:
+            current_catagory = getattr(self, catagory)
+            for item in current_catagory:
+                if name == item.name:
+                    raise AddingError
+
+
+
 
     # Properties
     @property
@@ -102,10 +117,18 @@ class Menu():
     def drinks(self):
         return self._drinks
 
-
 class ItemNotFound(Exception):
     def __init__(self, item_id):
         self._item_id = item_id
 
     def __str__(self):
         return f"item ({self._item_id}) is not found in the menu"
+
+
+class AddingError(Exception):
+    def __init__(self, name, reason):
+        self._name = name
+        self._reason = reason
+
+    def __str__(self):
+        return (f"adding {self._name} failed: {self._reason}")

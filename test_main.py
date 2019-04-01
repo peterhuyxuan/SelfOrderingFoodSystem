@@ -34,7 +34,7 @@ def test_burger():
 
     return b
 
-class TestUS1_2():
+class TestUS1_2Burger():
     def test_empty_burger(self):
         burger = Burger()
         assert len(burger.components) == 0
@@ -169,7 +169,7 @@ class TestUS1_2():
         with pytest.raises(ValueError):
             test_burger.remove_item(bun1)
 
-class TestUS1_3():
+class TestUS1_3Burger():
     def test_add_one_patty(self):
         burger = Burger()
         burger.add_item(bun1, 2, inv_item.quantity)
@@ -290,9 +290,10 @@ class TestUS1_3():
         test_burger.remove_item(patty1)
         with pytest.raises(ValueError):
             test_burger.remove_item(patty2)
+            
 # ===========================================================
 
-class TestUS1_4():
+class TestUS1_4Burger():
     def test_add_one_other_success(self):
         burger = Burger()
         burger.add_item(other1, 1, inv_item.quantity)
