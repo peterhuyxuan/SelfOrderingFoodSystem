@@ -3,8 +3,6 @@ from abc import ABC, abstractmethod
 class MenuItem(ABC):
     _id = -1
     def __init__(self, name, price, component, qty):
-        if qty < 1 or price <= 0:
-            raise ValueError(f"invalid price({price}) or/and qty({qty})")
         self._name = name
         self._price = price
         self._component = component
@@ -17,7 +15,7 @@ class MenuItem(ABC):
         return (f"<name: {self._name},id: {self._id}, price:{self._price} "
                 f"component= ({self._component_qty} x {self._component.name})>")
 
-    #Properties
+    # Properties
     @property
     def price(self):
         return self._price
@@ -33,6 +31,7 @@ class MenuItem(ABC):
     @classmethod
     def _reset_id_count(cls):
         cls._id = -1
+
     
 class Bun(MenuItem):
     def __init__(self, name, price, component, qty):
