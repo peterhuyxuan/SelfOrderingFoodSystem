@@ -1,18 +1,29 @@
-from abc import ABC, abstractmethod,abstractproperty
-from menu_item import Bun, Patty, OtherIngredient, Side, Drink
-
+from menu_item import  Side, Drink
+from main import Main
 class Order():
 
 	def __init__(self):
+<<<<<<< HEAD
 		self._order_done = False
+=======
+            """
+            items should be a dicitonary
+            use name of the item as key
+            you dont need _num_mains and _categoriesgories
+            """ 
+		self._status = ("Preparing Order", "Ready for Pickup"(
+>>>>>>> 46a083f02c2c5757018ca85b8288489c139a211a
 		self._total_price = 0
 		self._items = []
 		Order._id += 1
 		self._id = Order._id
 		
-	def add_item(self, name, categories, price, component, qty):
+        def add_item(self, item, qty):
         self._check_name_exists(name)
-		if isinstance(categories, buns):
+            if isinstance(item, Main):
+            """
+            use isinstance like this
+            """
 			item = Bun(name, price, component, qty)
 		elif isintance(categories, patties):
 			item = Patty(name, price, component, qty)
@@ -25,7 +36,12 @@ class Order():
 		self._total_price += qty * price
         self._items.append(item)
 	
-	def remove_item(self, item, price):
+	def remove_item(self, item):
+        """
+        change item to item_name which is a string
+        iterate through the dictionary to find key has save value
+        remove that entry
+        """
         if item in self._items:
             if isinstance(item, buns):
 				self._num_mains -= 1
@@ -59,6 +75,7 @@ class Order():
         	
 	# properties
 	@property
+<<<<<<< HEAD
 	def order_done(self):
 		return self._order_done
 	
@@ -73,3 +90,19 @@ class Order():
 	@property
 	def id(self):
         return self._id
+=======
+	def status(self):
+		return self._status
+	
+        @property
+	def total_price(self):
+		return self._total_price
+        
+        @property
+	def items(self):
+		return self._items
+		
+        @property
+	def num_mains(self):
+		return self._num_mains
+>>>>>>> 46a083f02c2c5757018ca85b8288489c139a211a
