@@ -2,22 +2,14 @@ import pytest
 from menu import Menu, ItemNotFound
 from menu_item import MenuItem, InvalidFieldError
 from main import Burger
+from inventory_item import inventoryItem
 
-class InventoryObject:
-	'''
-	this is a class only for testing menu
-	Should use InventoryItem for final integration test
-	'''
-
-	def __init__(self, name, item_id):
-		self.id = item_id
-		self.name = name
+inv_item = inventoryItem("test item", 100)
 
 @pytest.fixture
 def menu_fixture():
 	MenuItem._reset_id_count()
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_side("side", 10, inv_item , 1)
 	m.add_drink("drink", 10, inv_item, 1)
 	m.add_patty("patty", 10, inv_item, 1)
@@ -33,7 +25,6 @@ def test_empty_menu():
 
 def test_add_side():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_side("side-1", 10,inv_item, 1)
 	assert len(m.sides) == 1
 	assert m.sides[0].name == 'side-1'
@@ -44,7 +35,6 @@ def test_add_side():
 
 def test_add_drink():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_drink("drink-1", 10, inv_item, 1)
 	assert len(m.drinks) == 1
 	assert m.drinks[0].name == 'drink-1'
@@ -56,7 +46,6 @@ def test_add_drink():
 
 def test_add_patty():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_patty("patty-1", 10, inv_item, 1)
 	assert m.patties[0].name == "patty-1"
 	assert m.patties[0].price == 10
@@ -67,7 +56,6 @@ def test_add_patty():
 
 def test_add_other():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_other("other-1", 10, inv_item, 1)
 	assert m.other_ingredients[0].name == 'other-1'
 	assert m.other_ingredients[0].price == 10
@@ -78,7 +66,6 @@ def test_add_other():
 
 def test_add_bun():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_bun("bun-1", 10, inv_item, 1)
 	assert len(m.buns) == 1
 	assert m.buns[0].name == 'bun-1'
@@ -89,7 +76,6 @@ def test_add_bun():
 
 def test_add_multiple_same_cataory():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_patty("patty-1", 10, inv_item, 1)
 	m.add_patty("patty-2", 10, inv_item, 1)
 	assert m.patties[0].name == "patty-1"
@@ -105,7 +91,6 @@ def test_add_multiple_same_cataory():
 
 def test_add_multiple_different_cataory():
 	m = Menu()
-	inv_item = InventoryObject("test item", 0)
 	m.add_patty("patty-1", 10, inv_item, 1)
 	m.add_drink("drink-1", 10, inv_item, 1)
 	assert m.patties[0].name == "patty-1"

@@ -1,20 +1,9 @@
 import pytest
 from main import Burger, Wrap, InvalidQuantityException
 from menu_item import Bun, Patty, OtherIngredient
+from inventory_item import inventoryItem
 
-class InventoryObject:
-    '''
-    this is a class only for testing menu
-    Should use InventoryItem for final integration test
-    '''
-
-    def __init__(self, name, item_id, qty):
-        self.id = item_id
-        self.name = name
-        self.quantity = qty
-
-
-inv_item = InventoryObject('test item', 1, 100)
+inv_item = inventoryItem('test item', 100)
 
 patty1 = Patty("patty1", 10, inv_item, 1)
 patty2 = Patty("patty2", 20, inv_item, 2)
