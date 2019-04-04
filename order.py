@@ -1,9 +1,13 @@
-from abc import ABC, abstractmethod,abstractproperty
-from menu_item import Bun, Patty, OtherIngredient, Side, Drink
-
+from menu_item import  Side, Drink
+from main import Main
 class Order():
 
 	def __init__(self):
+            """
+            items should be a dicitonary
+            use name of the item as key
+            you dont need _num_mains and _categoriesgories
+            """ 
 		self._status = ("Preparing Order", "Ready for Pickup"(
 		self._total_price = 0
 		self._items = []
@@ -12,9 +16,12 @@ class Order():
                                 '_other_ingredients',
                                 '_sides', '_drinks')
 		
-	def add_item(self, name, categories, price, component, qty):
+        def add_item(self, item, qty):
         self._check_name_exists(name)
-		if isinstance(categories, buns):
+            if isinstance(item, Main):
+            """
+            use isinstance like this
+            """
 			item = Bun(name, price, component, qty)
 			self._num_mains += 1
 		elif isintance(categories, patties):
@@ -29,7 +36,12 @@ class Order():
 		self._total_price += qty * price
         self._items.append(item)
 	
-	def remove_item(self, item, price):
+	def remove_item(self, item):
+        """
+        change item to item_name which is a string
+        iterate through the dictionary to find key has save value
+        remove that entry
+        """
         if item in self._items:
             if isinstance(item, buns):
 				self._num_mains -= 1
@@ -45,12 +57,15 @@ class Order():
 	@property
 	def status(self):
 		return self._status
-		
+	
+        @property
 	def total_price(self):
 		return self._total_price
-		
+        
+        @property
 	def items(self):
 		return self._items
 		
+        @property
 	def num_mains(self):
 		return self._num_mains
