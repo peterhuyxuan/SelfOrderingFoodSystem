@@ -4,22 +4,18 @@ from menu_item import Bun, Patty, OtherIngredient, Side, Drink
 class Order():
 
 	def __init__(self):
-		self._status = ("Preparing Order", "Ready for Pickup"(
+		self._order_done = False
 		self._total_price = 0
 		self._items = []
-		self._num_mains = 0
-		self._categoriesgories = ('_buns', '_patties', 
-                                '_other_ingredients',
-                                '_sides', '_drinks')
+		Order._id += 1
+		self._id = Order._id
 		
 	def add_item(self, name, categories, price, component, qty):
         self._check_name_exists(name)
 		if isinstance(categories, buns):
 			item = Bun(name, price, component, qty)
-			self._num_mains += 1
 		elif isintance(categories, patties):
 			item = Patty(name, price, component, qty)
-			self._num_mains += 1
 		elif isintance(categories, side):
 			item = Side(name, price, component, qty)
 		elif isintance(categories, drink):
@@ -41,16 +37,39 @@ class Order():
 				self._total_price -= price
 			self._items.remove(item)
 			
+	def mark_finished(self):
+		self._order_done = True
+	
+	def order_removal(self, order_id):
+		for id in self._id
+			if id == order_id
+				self._order_done = False
+				self._total_price = 0
+				new_order._items = []
+				Order._id -= 1
+				new_order._id = Order._id
+				break
+    
+    def order_checkout(self, order_id):
+        self._order_done = True
+        # print dictionary
+        def __str__(self):
+            return f"Total price is ${self._total_price}"
+        order_removal(order_id)
+        	
 	# properties
 	@property
-	def status(self):
-		return self._status
-		
+	def order_done(self):
+		return self._order_done
+	
+	@property
 	def total_price(self):
 		return self._total_price
-		
+	
+	@property
 	def items(self):
 		return self._items
-		
-	def num_mains(self):
-		return self._num_mains
+	
+	@property
+	def id(self):
+        return self._id
