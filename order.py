@@ -3,64 +3,68 @@ from main import Main
 from menu_item import Side, Drink
 
 class Order():
-    _id = -1
+	_id = -1
 	def __init__(self):
 		self._order_done = False
 		self._total_price = 0
-		self._items = {}
+		self._others = {}
 		self._mains = []
 		Order._id += 1
 		self._id = Order._id
 
 	def add_main(self, main):
-	    self._mains.append(main)
-	    self._price += main.price
-	    		
+		if not isinstance(main, Main):
+			raise TypeError(f"{main} is not a Main") 
+		self._mains.append(main)
+		self._total_price += main.price
+				
 	def remove_main(self, main_id):
-	    for main in self._mains:
-	        if main.id == main_id:
-	            self._price -= main.price
-	            self._mains.remove(main)
-	        
+		for main in self._mains:
+			if main.id == main_id:
+				self._total_price -= main.price
+				self._mains.remove(main)
+			
 	def add_others(self, item, qty):
-        if qty < 1:
-            raise ValueError(f"qty ({qty}) less than 1")
-        if qty * item.component_qty > item.component.quantity:
-            raise ValueError(f"Insufficient stock for {item.name}")
+		if not isinstance(item, (Side,Drink)):
+			raise TypeError(f"{item} is neither side nor drink")
+		if qty < 1:
+			raise ValueError(f"qty ({qty}) less than 1")
+		if qty * item.component_qty > item.component.quantity:
+			raise ValueError(f"Insufficient stock for {item.name}")
 		if isinstance(item, Side):
-		    self._items[item.name] = qty
+			self._others[item.name] = qty
 		elif isinstance(item, Drink):
-			self._items[item.name] = qty
+			self._others[item.name] = qty
 		self._total_price += qty * item.price
 	
 	def update_other(self, item, qty): 
-	    if qty < 1:
-            raise ValueError(f"qty ({qty}) less than 1")
-        if qty * item.component_qty > item.component.quantity:
-            raise ValueError(f"Insufficient stock for {item.name}")
-	    try:
-	        self._items[item.name] = qty
-	    except KeyError:
-	        print(f"{item.name} is not in the order")
+		if qty < 1:
+			raise ValueError(f"qty ({qty}) less than 1")
+		if qty * item.component_qty > item.component.quantity:
+			raise ValueError(f"Insufficient stock for {item.name}")
+		change_in_qty = qty - self._others[item.name]
+		self._total_price += change_in_qty * item.price
+		self._others[item.name] = qty
+
 	
 	def remove_other(self, item):
-        try:
-            qty = self._items.pop(item.name)
-        except KeyError:
-	        print(f"{item.name} is not in the order")
-        else:
-            self._total_price -= qty * item.price
-            	
+		try:
+			qty = self._others.pop(item.name)
+		except KeyError:
+			print(f"{item.name} is not in the order")
+		else:
+			self._total_price -= qty * item.price
+				
 	def mark_finished(self):
 		self._order_done = True
-    
-    def order_checkout(self, order_id):
-        self._order_done = True
-        # print dictionary
-        def __str__(self):
-            return f"Total price is ${self._total_price}"
-        order_removal(order_id)
-        	
+	
+	def order_checkout(self, order_id):
+		self._order_done = True
+		# print dictionary
+		def __str__(self):
+			return f"Total price is ${self._total_price}"
+
+			
 	# properties
 	@property
 	def order_done(self):
@@ -76,11 +80,15 @@ class Order():
 	
 	@property
 	def id(self):
-        return self._id
-        
-    @property
-    def mains(self):
-        return self._mains
-        
-    def __len__(self):
-        return len(self._others) + len(self._mains)
+		return self._id
+		
+	@property
+	def mains(self):
+		return self._mains
+		
+	def __len__(self):
+		len_others = 0
+		for qty in self._others.values():
+			len_others += qty
+		
+		return 	len_others + len(self._mains)

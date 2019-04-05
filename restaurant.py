@@ -12,38 +12,38 @@ class Restaurant():
 		self._menu = Menu()
 		
 	def add_order(self, order):
-	    self._orders.append(order)
+		self._orders.append(order)
 
-    def change_order_status(self, order_id):
+	def change_order_status(self, order_id):
 		order = self.get_order(order_id)
 		order.mark_finished()
 	
 	def remove_order(self, order_id):
 		order = self.get_order(order_id)  
 		if order is not None:
-		    self._orders.remove(order)
+			self._orders.remove(order)
 	
 	def checkout(self, order_id):
-	    order = self.get_order(order_id)
-        if len(order) == 0 or order is None:
-            raise ValueError(f"{order} has no items to checkout or is None") 
-	    order.mark_finished()
-	    for item_name, qty  in order.others.items():
-            self.consume_stock(item_name, qty)
-            
-        for main in order.mains:
-	        for component_id, qty in main.component.items():
-	            self.consume_stock(component_id, qty)
-	    
-	    # reduce_inventory
-	    self.remove_order(order_id)
+		order = self.get_order(order_id)
+		if len(order) == 0 or order is None:
+			raise ValueError(f"{order} has no items to checkout or is None") 
+		order.mark_finished()
+		for item_name, qty  in order.others.items():
+			self.consume_stock(item_name, qty)
+			
+		for main in order.mains:
+			for component_id, qty in main.component.items():
+				self.consume_stock(component_id, qty)
+		
+		# reduce_inventory
+		self.remove_order(order_id)
 
-    def get_order(self, order_id):
-        for order in self._orders:
-            if order_id == order.id:
-                return order
-        return None
-            
+	def get_order(self, order_id):
+		for order in self._orders:
+			if order_id == order.id:
+				return order
+		return None
+			
 		
 	# properties
 	@property
