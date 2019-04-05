@@ -1,15 +1,12 @@
 from abc import ABC
 
 class inventoryItem(ABC):
-    #
-    def __init__(self, name, quantity, price, ivid):
+    _id = -1
+    def __init__(self, name, quantity):
         self._name = name
         self._quantity = quantity
-        self._price = price
-        self._ivid = ivid
-        
-    def calc_price(self, item_count):
-        return item_count * self._price
+        inventoryItem._id += 1
+        self._id = inventoryItem._id
         
     @property
     def name(self):
@@ -19,15 +16,12 @@ class inventoryItem(ABC):
     def quantity(self):
         return self._quantity
             
-    @property
-    def price(self):
-        return self._price
             
     @property
-    def ivid(self):
-        return self._ivid
+    def id(self):
+        return self._id
         
     def __str__(self):
-        return f'Item <{self.name}, {self.quantity}, {self.price}, {self.ivid}>'
+        return f'Item <{self.name}, {self.quantity}, {self.id}>'
 
 
