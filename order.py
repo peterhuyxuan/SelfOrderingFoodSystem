@@ -58,12 +58,13 @@ class Order():
 	def mark_finished(self):
 		self._order_done = True
 	
+	"""
 	def order_checkout(self, order_id):
 		self._order_done = True
 		# print dictionary
 		def __str__(self):
 			return f"Total price is ${self._total_price}"
-
+	"""
 			
 	# properties
 	@property
