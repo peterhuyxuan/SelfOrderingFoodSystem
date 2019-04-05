@@ -1,7 +1,7 @@
 from abc import ABC
 
 class inventoryItem(ABC):
-
+    #
     def __init__(self, name, quantity, price, ivid):
         self._name = name
         self._quantity = quantity
@@ -29,4 +29,5 @@ class inventoryItem(ABC):
         
     def __str__(self):
         return f'Item <{self.name}, {self.quantity}, {self.price}, {self.ivid}>'
+
 

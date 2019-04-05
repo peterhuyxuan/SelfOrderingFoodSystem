@@ -24,6 +24,7 @@ def setup_system():
 
 def test_full_search(capsys):
     #This tests if all the inventory has been added or not
+    #
     system = setup_system()
     system.item_search()
     res = capsys.readouterr()
@@ -48,3 +49,4 @@ def test_one_search(capsys):
     res = capsys.readouterr()
     expected_output = ("Item <Tomato, 100, 5, 4>\n")
     assert res.out == expected_output
+    
