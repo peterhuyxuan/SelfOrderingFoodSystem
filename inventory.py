@@ -30,11 +30,11 @@ class inventory():
             if name == item.name:
                 item.quantity = item.quantity + quantity
 
-    def remove_stock (self, name, quantity):
+    def consume_stock (self, name, quantity):
         self._check_item_exists
         for item in self._item:
             if name == item.name:
-                item.quantity = item.quantity + quantity
+                item.quantity = item.quantity - quantity
 
     def _check_name_exists(self, name):
         for item in self._item:
