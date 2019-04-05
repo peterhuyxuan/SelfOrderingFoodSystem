@@ -11,9 +11,22 @@ class Order():
 		self._mains = []
 		Order._id += 1
 		self._id = Order._id
-		
+
+	def add_main(self, main):
+	    self._mains.append(main)
+	    self._price += main.price
+	    		
+	def remove_main(self, main_id):
+	    for main in self._mains:
+	        if main.id == main_id:
+	            self._price -= main.price
+	            self._mains.remove(main)
+	        
 	def add_others(self, item, qty):
-        self._check_name_exists(name)
+        if qty < 1:
+            raise ValueError(f"qty ({qty}) less than 1")
+        if qty * item.component_qty > item.component.quantity:
+            raise ValueError(f"Insufficient stock for {item.name}")
 		if isinstance(item, Side):
 		    self._items[item.name] = qty
 		elif isinstance(item, Drink):
@@ -21,14 +34,14 @@ class Order():
 		self._total_price += qty * item.price
 	
 	def update_other(self, item, qty): 
+	    if qty < 1:
+            raise ValueError(f"qty ({qty}) less than 1")
+        if qty * item.component_qty > item.component.quantity:
+            raise ValueError(f"Insufficient stock for {item.name}")
 	    try:
 	        self._items[item.name] = qty
 	    except KeyError:
 	        print(f"{item.name} is not in the order")
-	        
-	def add_main(self, main):
-	    self._mains.append(main)
-	    self._price += main.price
 	
 	def remove_other(self, item):
         try:
@@ -37,11 +50,7 @@ class Order():
 	        print(f"{item.name} is not in the order")
         else:
             self._total_price -= qty * item.price
-            
-    def add_main(self, main):
-	    self._mains.append(main)
-	    self._price += main.price
-			
+            	
 	def mark_finished(self):
 		self._order_done = True
     
@@ -62,9 +71,16 @@ class Order():
 		return self._total_price
 	
 	@property
-	def items(self):
-		return self._items
+	def others(self):
+		return self._others
 	
 	@property
 	def id(self):
         return self._id
+        
+    @property
+    def mains(self):
+        return self._mains
+        
+    def __len__(self):
+        return len(self._others) + len(self._mains)
