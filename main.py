@@ -2,9 +2,11 @@ from abc import ABC, abstractmethod,abstractproperty
 from menu_item import Patty, OtherIngredient, Bun, MenuItem
 
 class Main(ABC):
-
+    _id = 0
     def __init__(self, name):
         self._name = name
+        self._id = Main._id
+        Main._id += 1
         self._components = {}
         self._num_buns = 0
         self._num_patties = 0
@@ -160,6 +162,9 @@ class Main(ABC):
     def price(self):
         return self._price
 
+    @property
+    def id(self):
+        return self._id
     @abstractmethod
     def _max_bun(self):
         pass
@@ -179,6 +184,7 @@ class Main(ABC):
     @abstractmethod
     def check_min_patties(self):
         pass
+
 
 
 class Burger(Main):
