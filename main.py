@@ -19,7 +19,7 @@ class Main(ABC):
         if item is already in the components
         an exception will be raised
         '''
-        if item.id in self._components.keys():
+        if item.name in self._components.keys():
             raise ValueError(f"item({item}) is already in the components")
 
         if isinstance(item, Bun):
@@ -34,7 +34,7 @@ class Main(ABC):
         else:
             raise TypeError(f"{item.__class__.__name__} is not a valid ingredient")
         
-        self._components[item.id] = qty
+        self._components[item.name] = qty
         self._price += qty * item.price
 
     def update_qty(self, item, qty, inventory_level):
@@ -44,32 +44,32 @@ class Main(ABC):
         an exception will be raised
         '''
 
-        if item.id not in self._components.keys():
+        if item.name not in self._components.keys():
             raise ValueError(f"item({item}) is not in the components")
         
         if isinstance(item, Bun):
-            new_qty = qty - self._components[item.id] + self._num_buns
+            new_qty = qty - self._components[item.name] + self._num_buns
             self._valid_bun_qty(item, qty, new_qty)
             self._num_buns = new_qty
             self.check_min_buns()
         elif isinstance(item, Patty):
-            new_qty = qty - self._components[item.id] + self._num_patties
+            new_qty = qty - self._components[item.name] + self._num_patties
             self._valid_patty_qty(item, qty, new_qty)
             self._num_patties = new_qty
             self.check_min_patties()
         elif isinstance(item, OtherIngredient):
-            new_qty = qty - self._components[item.id] + self._num_others
+            new_qty = qty - self._components[item.name] + self._num_others
             self._valid_other_qty(item, qty, new_qty)
             self._num_others = new_qty
         else:
             raise TypeError(f"{item.__class__.__name__} is not a valid ingredient")
         
-        self._price += (qty - self._components[item.id]) * item.price
-        self._components[item.id] = qty   
+        self._price += (qty - self._components[item.name]) * item.price
+        self._components[item.name] = qty   
         
     def remove_item(self, item):
-        if item.id in self._components.keys():
-            qty = self._components.pop(item.id)
+        if item.name in self._components.keys():
+            qty = self._components.pop(item.name)
             self._price  -= item.price * qty
             if isinstance(item, Bun):
                 self._num_buns -= qty
