@@ -3,18 +3,18 @@ from order import Order
 from menu import Menu
 from main import Main
 from menu_item import MenuItem
-from inventory import inventory
+from inventory import Inventory
 
 class Restaurant():
 	def __init__(self):
 		self._orders = []
-		self._inventory = []
+		self._inventory = Inventory()
 		self._menu = Menu()
 		
 	def add_order(self):
-                order = Order()
+		order = Order()
 		self._orders.append(order)
-                return order
+		return order
 
 	def change_order_status(self, order_id):
 		order = self.get_order(order_id)
@@ -31,11 +31,11 @@ class Restaurant():
 			raise ValueError(f"{order} has no items to checkout or is None") 
 		order.mark_finished()
 		for item_name, qty  in order.others.items():
-			self.consume_stock(item_name, qty)
+			self._inventory.consume_stock(item_name, qty)
 			
 		for main in order.mains:
 			for component_id, qty in main.component.items():
-				self.consume_stock(component_id, qty)
+				self._inventory.consume_stock(component_id, qty)
 		
 		# reduce_inventory
 		self.remove_order(order_id)
@@ -53,8 +53,8 @@ class Restaurant():
 		return self._orders
 	
 	@property
-	def inventory_system(self):
-		return self._inventory_system
+	def inventory(self):
+		return self._inventory
 	
 	@property
 	def menu(self):
