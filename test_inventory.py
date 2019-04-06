@@ -1,10 +1,10 @@
 from inventory_item import inventoryItem
-from inventory import Inventory, RemovalError, ItemNotFound
+from inventory import inventory, RemovalError, ItemNotFound
 
 import pytest
 import sys
 
-system = Inventory()
+system = inventory()
 inventoryItem._reset_id_count()
 for name in ["Seseme Bun", "Brioche Bun", "Lettuce", "Tomato", "Patty"]:
     system.add_stock(name, 100)
