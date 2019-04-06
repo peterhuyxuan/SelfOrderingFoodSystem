@@ -81,6 +81,13 @@ def test_add_one_sides():
     assert len(o.others) == 1
     assert o.total_price == 10
 
+def test_remove_side(order_fixture):
+    order_fixture.remove_other(side)
+    assert len(order_fixture) == 2
+    assert len(order_fixture.mains) == 1
+    assert len(order_fixture.others) == 1
+    assert order_fixture.total_price == 54
+
 def test_add_one_sides_one_drinks():
     o = Order()
     o.add_others(side,1)
@@ -90,7 +97,6 @@ def test_add_one_sides_one_drinks():
     assert o.total_price == 20
 
 # Test for drinks
-
 def test_add_zero_drinks():
     o = Order()
     with pytest.raises(ValueError) as e:
@@ -105,8 +111,21 @@ def test_add_inventory_drinks_limit():
         assert len(o) == 0
         assert len(o.others) == 0
 
-# test updating other qty
+def test_add_one_drink():
+    o = Order()
+    o.add_others(drink,1)
+    assert len(o) == 1
+    assert len(o.others) == 1
+    assert o.total_price == 10
 
+def test_remove_drink(order_fixture):
+    order_fixture.remove_other(drink)
+    assert len(order_fixture) == 2
+    assert len(order_fixture.mains) == 1
+    assert len(order_fixture.others) == 1
+    assert order_fixture.total_price == 54
+
+# test updating other qty
 def test_update_side_qty(order_fixture):
     order_fixture.update_other(side, 2)
     assert len(order_fixture) == 4
@@ -114,17 +133,8 @@ def test_update_side_qty(order_fixture):
     assert len(order_fixture.others) == 2
     assert order_fixture.total_price == 74
 
-# test removing a side
-
-def test_remove_side(order_fixture):
-    order_fixture.remove_other(side)
-    assert len(order_fixture) == 2
-    assert len(order_fixture.mains) == 1
-    assert len(order_fixture.others) == 1
-    assert order_fixture.total_price == 54
 
 # test removing a main
-
 def test_remove_main(order_fixture):
     order_fixture.remove_main(burger.id)
     assert len(order_fixture) == 2
