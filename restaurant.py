@@ -11,8 +11,10 @@ class Restaurant():
 		self._inventory = []
 		self._menu = Menu()
 		
-	def add_order(self, order):
+	def add_order(self):
+                order = Order()
 		self._orders.append(order)
+                return order
 
 	def change_order_status(self, order_id):
 		order = self.get_order(order_id)
