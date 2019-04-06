@@ -26,15 +26,43 @@ class inventory():
 
     def refill_stock (self, name, quantity):
         self._check_item_exists
+        if quantity == 0:
+            raise ZeroError
         for item in self._item:
             if name == item.name:
-                item.quantity = item.quantity + quantity
+                item.quantity += quantity
 
     def consume_stock (self, name, quantity):
         self._check_item_exists
+        if quantity == 0:
+            raise ZeroError
         for item in self._item:
             if name == item.name:
-                item.quantity = item.quantity - quantity
+                if item.quantity < quantity:
+                    raise RemovalError
+                item.quantity -= quantity
+
+    def remove_stock(self, item_id : int):
+        """
+        remove the item with item_id from the menu
+        if item is not in menu 
+        """
+        removal_flag = False
+        for item in self._item:
+            if item.id == item_id:
+                self._item.remove(item)
+                removal_flag = True
+                break
+
+            if removal_flag == True:
+                break
+
+        if removal_flag == False:
+            raise ItemNotFound(item_id)
+
+    '''
+    Helper functions
+    '''
 
     def _check_name_exists(self, name):
         for item in self._item:
@@ -48,7 +76,7 @@ class inventory():
                 id = 1
                 break
         if id == 0:
-            raise ItemNotFound
+            raise ItemNotFound(item.id)
 
 class AddingError(Exception):
     def __init__(self, name, reason):
@@ -63,6 +91,19 @@ class ItemNotFound(Exception):
         self._item_id = item_id
 
     def __str__(self):
-        return f"item ({self._item_id}) is not found in the menu"
+        return f"item ({self._item_id}) is not found in the inventory"
 
-#
+class RemovalError(Exception):
+    def __init__(self, item_id):
+        self._item_id = item_id
+
+    def __str__(self):
+        return f"item ({self._item_id}) does not have enough stock in the inventory"
+
+class ZeroError(Exception):
+    def __init__(self, item_id):
+        self._item_id = item_id
+    
+    def __str__(self):
+        return f"item ({self._item_id} cannot be zero"
+        

@@ -16,7 +16,10 @@ class inventoryItem(ABC):
     def quantity(self):
         return self._quantity
             
-            
+    @quantity.setter
+    def quantity(self,value):
+         self._quantity = value
+
     @property
     def id(self):
         return self._id
