@@ -223,7 +223,7 @@ class Wrap(Main):
         return 2
     
     def _max_others(self):
-        return 5
+        return 3
  
     def __str__(self):
         return "Wrap " + super().__str__()
