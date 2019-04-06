@@ -1,11 +1,10 @@
 from inventory_item import inventoryItem
-from inventory import inventory, RemovalError, ItemNotFound
+from inventory import Inventory, RemovalError, ItemNotFound
 
 import pytest
 import sys
 
-
-system = inventory()
+system = Inventory()
 inventoryItem._reset_id_count()
 for name in ["Seseme Bun", "Brioche Bun", "Lettuce", "Tomato", "Patty"]:
     system.add_stock(name, 100)
@@ -90,6 +89,19 @@ def test_RemovalError():
     with pytest.raises(RemovalError):
         system.consume_stock(4, 101)
         assert system._item[4].quantity == 100
+        
+def test_get_item():
+    #This checks if the system can return an object from the list
+    output = system.get_item("Lettuce")
+    assert output.id == system._item[2].id
+    assert output.name == system._item[2].name
+    assert output.quantity == system._item[2].quantity
+
+def test_invalid_get_item():
+	#This checks if the system can detect if an item isn't in the list
+	'''Side note - get_item is case sensitive'''
+	with pytest.raises(ValueError):
+		system.get_item("lettuce")
 
 #The two following tests checks if the system rejects orders with zero as the quantity
 

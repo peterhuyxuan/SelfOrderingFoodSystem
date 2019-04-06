@@ -19,6 +19,16 @@ class Inventory():
                 if inventoryItem.name == name:
                     print(item)
 
+    def get_item(self, name):
+        self._name = name
+        error = False
+        for item in self._item:
+            if item.name == name:
+                error = True
+                return item
+        if (error == False):
+            raise ValueError(f"Item {self._name} is not in inventory")
+
     def add_stock (self, name, quantity):
         self._check_name_exists(name)
         item = inventoryItem(name, quantity)
