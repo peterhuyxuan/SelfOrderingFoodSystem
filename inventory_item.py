@@ -27,3 +27,8 @@ class inventoryItem(ABC):
     def __str__(self):
         return f'Item <{self.name}, {self.quantity}, {self.id}>'
 
+    @classmethod
+    def _reset_id_count(cls):
+        cls._id = -1
+
+    
