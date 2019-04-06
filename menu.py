@@ -73,11 +73,11 @@ class Menu():
             for item in getattr(self,catagory):
                 print(item)
 
-    def get_item(self, item_id):
+    def get_item(self, item_name):
         for catagory in self._catagories:
             current_catagory = getattr(self, catagory)
             for item in current_catagory:
-                if item.id == item_id:
+                if item.name == item_name:
                     return item
             
         return None
@@ -88,7 +88,6 @@ class Menu():
             for item in current_catagory:
                 if name == item.name:
                     raise AddingError
-
 
 
 

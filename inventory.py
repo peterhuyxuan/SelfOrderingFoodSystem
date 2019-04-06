@@ -1,6 +1,6 @@
 from inventory_item import inventoryItem
 
-class inventory():
+class Inventory():
 
     def __init__(self):
         self._item = []
