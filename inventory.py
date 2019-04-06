@@ -20,32 +20,31 @@ class inventory():
                     print(item)
 
     def add_stock (self, name, quantity):
-        self._check_name_exists
+        self._check_name_exists(name)
         item = inventoryItem(name, quantity)
         self._item.append(item)
 
-    def refill_stock (self, name, quantity):
-        self._check_item_exists
+    def refill_stock (self, id, quantity):
+        self._check_item_exists(id)
         if quantity == 0:
-            raise ZeroError
+            raise ValueError("Quantity input Cannot be Zero")
         for item in self._item:
-            if name == item.name:
+            if id == item.id:
                 item.quantity += quantity
 
-    def consume_stock (self, name, quantity):
-        self._check_item_exists
+    def consume_stock (self, id, quantity):
+        self._check_item_exists(id)
         if quantity == 0:
-            raise ZeroError
+            raise ValueError("Quantity inupt Cannot be Zero")
         for item in self._item:
-            if name == item.name:
+            if id == item.id:
                 if item.quantity < quantity:
-                    raise RemovalError
+                    raise RemovalError(item.name)
                 item.quantity -= quantity
 
     def remove_stock(self, item_id : int):
         """
-        remove the item with item_id from the menu
-        if item is not in menu 
+        remove the item with item_id from the inventory
         """
         removal_flag = False
         for item in self._item:
@@ -67,43 +66,28 @@ class inventory():
     def _check_name_exists(self, name):
         for item in self._item:
             if name == item.name:
-                raise AddingError
+                raise ValueError(f"item({item.name}) is already in the inventory")
                 
-    def _check_item_exists(self, name):
-        id = 0
+    def _check_item_exists(self, id):
+        logic = 0
         for item in self._item:
-            if name == item.name:
-                id = 1
+            if id == item.id:
+                logic = 1
                 break
-        if id == 0:
-            raise ItemNotFound(item.id)
-
-class AddingError(Exception):
-    def __init__(self, name, reason):
-        self._name = name
-        self._reason = reason
-
-    def __str__(self):
-        return (f"adding {self._name} failed: {self._reason}")
+        if logic == 0:
+            raise ItemNotFound(id)
 
 class ItemNotFound(Exception):
-    def __init__(self, item_id):
-        self._item_id = item_id
+    def __init__(self, id):
+        self._id = id
 
     def __str__(self):
-        return f"item ({self._item_id}) is not found in the inventory"
+        return f"item with id ({self._id}) is not found in the inventory"
 
 class RemovalError(Exception):
-    def __init__(self, item_id):
-        self._item_id = item_id
+    def __init__(self, name):
+        self._name = name
 
     def __str__(self):
-        return f"item ({self._item_id}) does not have enough stock in the inventory"
-
-class ZeroError(Exception):
-    def __init__(self, item_id):
-        self._item_id = item_id
-    
-    def __str__(self):
-        return f"item ({self._item_id} cannot be zero"
+        return f"item ({self._name}) does not have enough stock in the inventory"
         
