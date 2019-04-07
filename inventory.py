@@ -86,7 +86,10 @@ class inventory():
                 break
         if logic == 0:
             raise ItemNotFound(id)
-
+    
+    @property
+    def items(self):
+        return self._item
 class ItemNotFound(Exception):
     def __init__(self, id):
         self._id = id

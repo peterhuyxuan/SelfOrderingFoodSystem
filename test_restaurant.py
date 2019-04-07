@@ -46,7 +46,7 @@ def restaurant_fixture():
     restaurant.menu.add_other("Cheese", 10, cheese_inv, 1)
     restaurant.menu.add_drink("Canned Coke", 10, coke_inv, 1)
     restaurant.menu.add_side("Small Chicken Nugget", 10, chick_inv, 6)
-
+    print(coke_inv)
     return restaurant
 
 class TestUS1_1(object):
@@ -99,9 +99,9 @@ class TestUS2_2:
         order.add_main(burger)
         restaurant_fixture.place_order(order)
         restaurant_fixture.checkout(0)
-        assert restaurant_fixture.inventory[0].quantity == 98
-        assert restaurant_fixture.inventory[1].quantity == 99
-        assert restaurant_fixture.inventory[2].quantity == 99
+        assert restaurant_fixture.inventory.items[0].quantity == 98
+        assert restaurant_fixture.inventory.items[1].quantity == 99
+        assert restaurant_fixture.inventory.items[2].quantity == 99
 
     def test_checkout_sides_and_drink(self, restaurant_fixture):
         order = Order()
@@ -113,5 +113,5 @@ class TestUS2_2:
         restaurant_fixture.checkout(1)
         chick_inv = restaurant_fixture.inventory.get_item("Chicken Nugget")
         coke_inv = restaurant_fixture.inventory.get_item("Coke")
-        #assert chick_inv.quantity == 94
+        assert chick_inv.quantity == 94
         assert coke_inv.quantity == 99

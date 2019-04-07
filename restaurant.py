@@ -33,13 +33,13 @@ class Restaurant():
 		for item_name, quantity  in order.others.items():
 			menu_item = self.menu.get_item(item_name)
 			inv_item = menu_item.component
-			self._inventory.consume_stock(inv_item.id, quantity * menu_item.component.quantity)
+			self._inventory.consume_stock(inv_item.id, quantity * menu_item.component_qty)
 			
 		for main in order.mains:
-			for item_name, quantity in main.component.items():
+			for item_name, quantity in main.components.items():
 				menu_item = self.menu.get_item(item_name)
 				inv_item = menu_item.component
-				self._inventory.consume_stock(inv_item.id, quantity * menu_item.component.quantity)
+				self._inventory.consume_stock(inv_item.id, quantity * menu_item.component_qty)
 		
 		# reduce_inventory
 		self.remove_order(order_id)
