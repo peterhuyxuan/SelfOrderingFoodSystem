@@ -1,18 +1,18 @@
-from abc import ABC, abstractmethod,abstractproperty
-from order import Order
+from abc import ABC, abstractmethod, abstractproperty
+
+from inventory import inventory
 from menu import Menu
-from main import Main
 from menu_item import MenuItem
-from inventory import Inventory
+from order import Order
+
 
 class Restaurant():
 	def __init__(self):
 		self._orders = []
-		self._inventory = Inventory()
+		self._inventory = inventory()
 		self._menu = Menu()
-		
-	def add_order(self):
-		order = Order()
+	
+	def place_order(self, order):
 		self._orders.append(order)
 		return order
 

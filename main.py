@@ -13,7 +13,7 @@ class Main(ABC):
         self._num_others = 0
         self._price = 0
 
-    def add_item(self, item, qty, inventory_level):
+    def add_item(self, item, qty):
         '''
         add items to main based on the types of item
         if item is already in the components
@@ -37,7 +37,7 @@ class Main(ABC):
         self._components[item.name] = qty
         self._price += qty * item.price
 
-    def update_qty(self, item, qty, inventory_level):
+    def update_qty(self, item, qty):
         '''
         change an item's quantity to a new quantity 
         if item is not in the components
@@ -96,7 +96,12 @@ class Main(ABC):
         if  total > self._max_bun():
             raise InvalidQuantityException("buns",qty, "Greater than maximal allowance")
             
-
+    def show_content(self, menu):
+        print("Name\t\tQuantity\tPrice")
+        for item, qty in self._components.items():
+            menu_item = menu.get_item(item)
+            print(f"{item}\t\t{qty}\t\t${menu_item.price} * {qty}")
+        print(f"Total: ${self.price}")
 
     def _valid_patty_qty(self, item, qty, total):
         '''

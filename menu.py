@@ -89,11 +89,9 @@ class Menu():
                 if name == item.name:
                     raise AddingError
 
-
-
     # Properties
     @property
-    def main(self):
+    def mains(self):
         return self._main
     
     @property
