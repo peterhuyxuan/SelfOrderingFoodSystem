@@ -15,9 +15,9 @@ bun = Bun("Bun", 11, bun_inv, 1)
 other = OtherIngredient("other", 12, other_inv, 1)
 
 burger = Burger()
-burger.add_item(patty, 1,patty_inv.quantity)
-burger.add_item(bun, 2, bun_inv.quantity)
-burger.add_item(other, 1, other_inv.quantity)
+burger.add_item(patty, 1)
+burger.add_item(bun, 2)
+burger.add_item(other, 1)
 
 side = Side("side", 10, side_inv, 1)
 drink = Drink("drink", 10, drink_inv, 1)
