@@ -81,3 +81,37 @@ Test the restaurant by user stories and acceptance criteria
 If the test cases are conducted explicitly bt other files
 State that in commenet
 """
+
+class TestUS2_2:
+    def test_checkout_empty_order(self, restaurant_fixture):
+        with pytest.raises(ValueError):
+            restaurant_fixture.checkout(0)
+    
+    def test_checkout_burger_only(self, restaurant_fixture):
+        order = Order()
+        burger = Burger()
+        bun = restaurant_fixture.menu.get_item("Bun")
+        patty = restaurant_fixture.menu.get_item("Patty")
+        cheese = restaurant_fixture.menu.get_item("Cheese")
+        burger.add_item(bun, 2)
+        burger.add_item(patty, 1)
+        burger.add_item(cheese, 1)
+        order.add_main(burger)
+        restaurant_fixture.place_order(order)
+        restaurant_fixture.checkout(0)
+        assert restaurant_fixture.inventory[0].quantity == 98
+        assert restaurant_fixture.inventory[1].quantity == 99
+        assert restaurant_fixture.inventory[2].quantity == 99
+
+    def test_checkout_sides_and_drink(self, restaurant_fixture):
+        order = Order()
+        coke = restaurant_fixture.menu.get_item("Canned Coke")
+        nugget = restaurant_fixture.menu.get_item("Small Chicken Nugget")
+        order.add_others(coke, 1)
+        order.add_others(nugget, 1)
+        restaurant_fixture.place_order(order)
+        restaurant_fixture.checkout(1)
+        chick_inv = restaurant_fixture.inventory.get_item("Chicken Nugget")
+        coke_inv = restaurant_fixture.inventory.get_item("Coke")
+        #assert chick_inv.quantity == 94
+        assert coke_inv.quantity == 99

@@ -27,15 +27,19 @@ class Restaurant():
 	
 	def checkout(self, order_id):
 		order = self.get_order(order_id)
-		if len(order) == 0 or order is None:
+		if order is None or len(order) == 0:
 			raise ValueError(f"{order} has no items to checkout or is None") 
 		order.mark_finished()
-		for item_name, qty  in order.others.items():
-			self._inventory.consume_stock(item_name, qty)
+		for item_name, quantity  in order.others.items():
+			menu_item = self.menu.get_item(item_name)
+			inv_item = menu_item.component
+			self._inventory.consume_stock(inv_item.id, quantity * menu_item.component.quantity)
 			
 		for main in order.mains:
-			for component_id, qty in main.component.items():
-				self._inventory.consume_stock(component_id, qty)
+			for item_name, quantity in main.component.items():
+				menu_item = self.menu.get_item(item_name)
+				inv_item = menu_item.component
+				self._inventory.consume_stock(inv_item.id, quantity * menu_item.component.quantity)
 		
 		# reduce_inventory
 		self.remove_order(order_id)
