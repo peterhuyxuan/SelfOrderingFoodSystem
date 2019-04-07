@@ -102,6 +102,7 @@ class TestUS2_2:
         assert restaurant_fixture.inventory.items[0].quantity == 98
         assert restaurant_fixture.inventory.items[1].quantity == 99
         assert restaurant_fixture.inventory.items[2].quantity == 99
+        assert len(restaurant_fixture.orders) == 0
 
     def test_checkout_sides_and_drink(self, restaurant_fixture):
         order = Order()
@@ -115,3 +116,30 @@ class TestUS2_2:
         coke_inv = restaurant_fixture.inventory.get_item("Coke")
         assert chick_inv.quantity == 94
         assert coke_inv.quantity == 99
+        assert len(restaurant_fixture.orders) == 0
+
+    def test_checkout_all(self, restaurant_fixture):
+        order = Order()
+        #adding a burger
+        burger = Burger()
+        bun = restaurant_fixture.menu.get_item("Bun")
+        patty = restaurant_fixture.menu.get_item("Patty")
+        cheese = restaurant_fixture.menu.get_item("Cheese")
+        burger.add_item(bun, 2)
+        burger.add_item(patty, 1)
+        burger.add_item(cheese, 1)
+        order.add_main(burger)
+        #adding sides and drinks
+        coke = restaurant_fixture.menu.get_item("Canned Coke")
+        nugget = restaurant_fixture.menu.get_item("Small Chicken Nugget")
+        order.add_others(coke, 1)
+        order.add_others(nugget, 1)
+        #placing the order and checking out
+        restaurant_fixture.place_order(order)
+        restaurant_fixture.checkout(2)
+        assert restaurant_fixture.inventory.items[0].quantity == 98
+        assert restaurant_fixture.inventory.items[1].quantity == 99
+        assert restaurant_fixture.inventory.items[2].quantity == 99
+        assert restaurant_fixture.inventory.items[3].quantity == 99
+        assert restaurant_fixture.inventory.items[4].quantity == 94
+        assert len(restaurant_fixture.orders) == 0

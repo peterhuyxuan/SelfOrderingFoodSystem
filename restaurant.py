@@ -18,7 +18,7 @@ class Restaurant():
 
 	def change_order_status(self, order_id):
 		order = self.get_order(order_id)
-		order.mark_finished()
+		order.mark_finished() 
 	
 	def remove_order(self, order_id):
 		order = self.get_order(order_id)  
