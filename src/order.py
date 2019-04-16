@@ -57,6 +57,10 @@ class Order():
 				
 	def mark_finished(self):
 		self._order_done = True
+
+	@classmethod
+	def _reset_id(cls):
+		cls._id = -1
 	
 	"""
 	def order_checkout(self, order_id):

@@ -31,6 +31,7 @@ def test_get_second_order(capsys):
 """
 @pytest.fixture
 def restaurant_fixture():
+    Order._reset_id()
     restaurant = Restaurant()
     names = ("Bun", "Patty", "Cheese", "Coke", "Chicken Nugget")
     for name in names:
@@ -46,7 +47,7 @@ def restaurant_fixture():
     restaurant.menu.add_other("Cheese", 10, cheese_inv, 1)
     restaurant.menu.add_drink("Canned Coke", 10, coke_inv, 1)
     restaurant.menu.add_side("Small Chicken Nugget", 10, chick_inv, 6)
-    print(coke_inv)
+    
     return restaurant
 
 class TestUS1_1(object):
@@ -98,6 +99,7 @@ class TestUS2_2:
         burger.add_item(cheese, 1)
         order.add_main(burger)
         restaurant_fixture.place_order(order)
+        print(order.id)
         restaurant_fixture.checkout(0)
         assert restaurant_fixture.inventory.items[0].quantity == 98
         assert restaurant_fixture.inventory.items[1].quantity == 99
@@ -111,7 +113,7 @@ class TestUS2_2:
         order.add_others(coke, 1)
         order.add_others(nugget, 1)
         restaurant_fixture.place_order(order)
-        restaurant_fixture.checkout(1)
+        restaurant_fixture.checkout(0)
         chick_inv = restaurant_fixture.inventory.get_item("Chicken Nugget")
         coke_inv = restaurant_fixture.inventory.get_item("Coke")
         assert chick_inv.quantity == 94
@@ -136,7 +138,7 @@ class TestUS2_2:
         order.add_others(nugget, 1)
         #placing the order and checking out
         restaurant_fixture.place_order(order)
-        restaurant_fixture.checkout(2)
+        restaurant_fixture.checkout(0)
         assert restaurant_fixture.inventory.items[0].quantity == 98
         assert restaurant_fixture.inventory.items[1].quantity == 99
         assert restaurant_fixture.inventory.items[2].quantity == 99
