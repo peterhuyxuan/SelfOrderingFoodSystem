@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% block body %}
+<div>
+  <br/>
+
+  <div>
+    <h2></h2>
+  </div>
+</div>
+<!--
+Here are some HTML tags you might find useful:
+
+  Form:               <form method="POST"></form>
+  Input field:        <input name="field_name" value="placeholder string"/>
+  Readonly field:     ??? (figure it out yourself)
+
+  Section:            <div></div>
+  Newline:            <br>
+  Red text:           <font size="3" color="red">ERROR MESSAGE</font> 
+  Submit button:      <button name="button_name" type="submit">Say Hi!</button>
+-->
+
+<!--
+{% raw %} This tag is to prevent Jinja from converting any of the Jinja templates below
+
+Here are some Jinja templates you might find useful:
+
+  1. Printing a variable:                       {{variable}}
+  2. If statement to check if variable exists:  {% if var %} ... {% endif %}
+  3. If statement with multiple conditions:     {% if var and var.name == 'Isaac' %}
+  4. If-Else statement:                         ???
+  5. For loop:                                  {% for booking in bookings %} ... {% endfor %}
+  6. Advanced features that may be useful for cleaner Jinja templating: 
+        {% macro %}, {% block %}, more at http://jinja.pocoo.org/docs/2.10/templates/
+
+{% endraw %}
+-->
+
+
+<!--
+  fields required:
+    Customer Name
+    Customer Licence
+    Start Location
+    End locaiton
+    Start Date
+    End Date
+-->
+
+
+<div style="margin-top: 20px">
+  <form method="POST">
+    <div>
+      <h1>Mains</h1>
+      <div>
+        <h3>Burgers</h3>
+        <div>
+          <label>Buns</label>
+          <input name = "buns" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Patties</label>
+          <input name = "patties" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Cheese</label>
+          <input name = "other_cheese" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Tomato</label>
+          <input name = "other_tomato" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Lettuce</label>
+          <input name = "other_Lettuce" placeholder="Enter Quantity"><br/>
+        </div>
+        <input type="submit" name="add_order" value="Add to Order">
+        <input type="submit" name="remove_item" value="Remove Item">
+      </div>  
+      
+      <div>
+        <h3>Wraps</h3>
+        <div>
+          <label>Buns</label>
+          <input name = "buns" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Patties</label>
+          <input name = "patties" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Cheese</label>
+          <input name = "other_cheese" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Tomato</label>
+          <input name = "other_tomato" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Lettuce</label>
+          <input name = "other_Lettuce" placeholder="Enter Quantity"><br/>
+        </div>
+        <input type="submit" name="add_order" value="Add to Order">
+        <input type="submit" name="remove_item" value="Remove Item">
+      </div>    
+      
+    </div>
+    
+    <div>
+      <h1>Sides</h1>
+      <div>
+        <div>
+          <label>French Fries</label>
+          <input name = "sides_fries" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Chicken Nuggets</label>
+          <input name = "sides_nuggets" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Ice Cream</label>
+          <input name = "sides_icecream" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+      </div>  
+    </div>
+    
+    <div>
+      <h1>Drinks</h1>
+      <div>
+        <div>
+          <label>Coke</label>
+          <input name = "drinks_coke" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Sprite</label>
+          <input name = "drinks_sprite" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Fanta</label>
+          <input name = "drinks_fanta" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Juice</label>
+          <input name = "drinks_juice" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Water</label>
+          <input name = "drinks_water" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+      </div>  
+    </div>
+  </form>
+</div>
+
+{% endblock %}

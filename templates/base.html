@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Restaurant System!</title>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- Tab Menu -->
+<a href="{{ url_for('menu') }}">Menu</a>
+<br>
+<a href="{{ url_for('order') }}">Order</a>
+<br>
+<h1>Peter, Alex and Lin's Online Restaurant!</h1>
+<img src="http://clipart-library.com/images/8i686d76T.jpg" width="150px" height="150px"/>
+<br/>
+
+<!-- Main Content -->
+<div class="content center-content">
+{% block body %}
+</div>
+{% endblock %}
+
+</body>
+</html>
