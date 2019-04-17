@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div style="margin-top: 20px">
+  <form method="POST">
+    <div>
+      <h1>Restaurant Staff: Order Status</h1>
+      <div>
+        <h2>All Orders</h2>
+        <div>
+          <div>
+            <h3>Incoming Order</h3>
+            <label>{List of incoming order + ingredients}</label>
+            <input type="submit" name="place_order" value="Place Order">
+            <input type="submit" name="cancel_order" value="Cancel Order"><br/>
+          </div>
+          <div>
+            <h3>Placed Order</h3>
+            <label>{List of placed order + ingredients}</label>
+            <input type="submit" name="change_order_status" value="Order Ready">
+            <input type="submit" name="remove_order" value="Remove Order"><br/>
+          </div>
+        </div>
+      </div>  
+      <br/>
+      <input type="submit" name="refresh" value="Refresh">
+  </form>
+</div>
+
+{% endblock %}

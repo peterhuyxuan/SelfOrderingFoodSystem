@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block body %}
+<div style="margin-top: 20px">
+  <form method="POST">
+    <div>
+      <h1>Menu</h1>
+      <h2>Mains</h2>
+      <div>
+        <h3>Burgers</h3>
+        <div>
+          <label>Buns</label>
+          <input name = "buns" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Patties</label>
+          <input name = "patties" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Cheese</label>
+          <input name = "other_cheese" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Tomato</label>
+          <input name = "other_tomato" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Lettuce</label>
+          <input name = "other_Lettuce" placeholder="Enter Quantity"><br/>
+        </div>
+        <input type="submit" name="add_order" value="Add to Order">
+        <input type="submit" name="remove_item" value="Remove Item">
+      </div>  
+      
+      <div>
+        <h3>Wraps</h3>
+        <div>
+          <label>Buns</label>
+          <input name = "buns" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Patties</label>
+          <input name = "patties" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Cheese</label>
+          <input name = "other_cheese" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Tomato</label>
+          <input name = "other_tomato" placeholder="Enter Quantity"><br/>
+        </div>
+        
+        <div>
+          <label>Lettuce</label>
+          <input name = "other_Lettuce" placeholder="Enter Quantity"><br/>
+        </div>
+        <input type="submit" name="add_order" value="Add to Order">
+        <input type="submit" name="remove_item" value="Remove Item">
+      </div>    
+      
+    </div>
+    
+    <div>
+      <h2>Sides</h2>
+      <div>
+        <div>
+          <label>French Fries</label>
+          <input name = "sides_fries" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Chicken Nuggets</label>
+          <input name = "sides_nuggets" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Ice Cream</label>
+          <input name = "sides_icecream" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+      </div>  
+    </div>
+    
+    <div>
+      <h2>Drinks</h2>
+      <div>
+        <div>
+          <label>Coke</label>
+          <input name = "drinks_coke" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Sprite</label>
+          <input name = "drinks_sprite" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Fanta</label>
+          <input name = "drinks_fanta" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Juice</label>
+          <input name = "drinks_juice" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+        
+        <div>
+          <label>Water</label>
+          <input name = "drinks_water" placeholder="Enter Quantity">
+          <input type="submit" name="add_order" value="Add to Order">
+          <input type="submit" name="remove_item" value="Remove Item">
+        </div>
+      </div>
+      <br/>
+      <input type="submit" name="checkout" value="Checkout">  
+    </div>
+  </form>
+</div>
+
+{% endblock %}
