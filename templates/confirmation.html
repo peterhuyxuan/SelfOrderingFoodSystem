@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div style="margin-top: 20px">
+  <form method="POST">
+    <div>
+      <h1>Order Confirmation</h1>
+      <div>
+        <h2>Main</h2>
+        <div>
+          <label>{List of all items ordered + each item's price}</label><br/>
+        </div>
+      </div>  
+      <br/>
+      Total Price: {total_price}<br/>
+      Order ID: {id}<br/>
+      Order Status: {order_done}<br/>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,57 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
-<div>
-  <br/>
-
-  <div>
-    <h2></h2>
-  </div>
-</div>
-<!--
-Here are some HTML tags you might find useful:
-
-  Form:               <form method="POST"></form>
-  Input field:        <input name="field_name" value="placeholder string"/>
-  Readonly field:     ??? (figure it out yourself)
-
-  Section:            <div></div>
-  Newline:            <br>
-  Red text:           <font size="3" color="red">ERROR MESSAGE</font> 
-  Submit button:      <button name="button_name" type="submit">Say Hi!</button>
--->
-
-<!--
-{% raw %} This tag is to prevent Jinja from converting any of the Jinja templates below
-
-Here are some Jinja templates you might find useful:
-
-  1. Printing a variable:                       {{variable}}
-  2. If statement to check if variable exists:  {% if var %} ... {% endif %}
-  3. If statement with multiple conditions:     {% if var and var.name == 'Isaac' %}
-  4. If-Else statement:                         ???
-  5. For loop:                                  {% for booking in bookings %} ... {% endfor %}
-  6. Advanced features that may be useful for cleaner Jinja templating: 
-        {% macro %}, {% block %}, more at http://jinja.pocoo.org/docs/2.10/templates/
-
-{% endraw %}
--->
-
-
-<!--
-  fields required:
-    Customer Name
-    Customer Licence
-    Start Location
-    End locaiton
-    Start Date
-    End Date
--->
-
-
 <div style="margin-top: 20px">
   <form method="POST">
     <div>
-      <h1>Mains</h1>
+      <h1>Menu</h1>
+      <h2>Mains</h2>
       <div>
         <h3>Burgers</h3>
         <div>
@@ -115,7 +68,7 @@ Here are some Jinja templates you might find useful:
     </div>
     
     <div>
-      <h1>Sides</h1>
+      <h2>Sides</h2>
       <div>
         <div>
           <label>French Fries</label>
@@ -141,7 +94,7 @@ Here are some Jinja templates you might find useful:
     </div>
     
     <div>
-      <h1>Drinks</h1>
+      <h2>Drinks</h2>
       <div>
         <div>
           <label>Coke</label>
@@ -177,7 +130,9 @@ Here are some Jinja templates you might find useful:
           <input type="submit" name="add_order" value="Add to Order">
           <input type="submit" name="remove_item" value="Remove Item">
         </div>
-      </div>  
+      </div>
+      <br/>
+      <input type="submit" name="checkout" value="Checkout">  
     </div>
   </form>
 </div>
