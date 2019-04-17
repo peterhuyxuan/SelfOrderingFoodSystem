@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod, abstractproperty
-
+from pickle import dump, load
 from inventory import inventory
 from menu import Menu
 from menu_item import MenuItem
 from order import Order
+
 
 
 class Restaurant():
@@ -50,7 +51,10 @@ class Restaurant():
 				return order
 		return None
 			
-		
+	def save(self):
+		with open('system.dat', 'wb') as f:
+			dump(self, f)
+			 	
 	# properties
 	@property
 	def orders(self):
