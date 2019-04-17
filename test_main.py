@@ -1,7 +1,7 @@
 import pytest
-from main import Burger, Wrap, InvalidQuantityException
-from menu_item import Bun, Patty, OtherIngredient
-from inventory_item import inventoryItem
+from src.main import Burger, Wrap, InvalidQuantityException
+from src.menu_item import Bun, Patty, OtherIngredient
+from src.inventory_item import inventoryItem
 
 # Test for Burgers
 

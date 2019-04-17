@@ -1,8 +1,8 @@
 import pytest
-from menu_item import *
-from main import Burger, Wrap
-from inventory_item import inventoryItem
-from order import Order
+from src.menu_item import *
+from src.main import Burger, Wrap
+from src.inventory_item import inventoryItem
+from src.order import Order
 
 side_inv = inventoryItem('side_inv', 100)
 drink_inv = inventoryItem('drink_inv', 100)

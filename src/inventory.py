@@ -1,4 +1,4 @@
-from inventory_item import inventoryItem
+from src.inventory_item import inventoryItem
 
 class inventory():
 

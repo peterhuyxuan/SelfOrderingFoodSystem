@@ -1,5 +1,5 @@
-from menu_item import Bun, Patty, OtherIngredient, Side, Drink
-from main import Main
+from src.menu_item import Bun, Patty, OtherIngredient, Side, Drink
+from src.main import Main
 
 class Menu():
  

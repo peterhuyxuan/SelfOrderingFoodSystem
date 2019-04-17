@@ -1,5 +1,5 @@
-from inventory_item import inventoryItem
-from inventory import inventory, RemovalError, ItemNotFound
+from src.inventory_item import inventoryItem
+from src.inventory import inventory, RemovalError, ItemNotFound
 
 import pytest
 import sys

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod,abstractproperty
-from main import Main
-from menu_item import Side, Drink
+from src.main import Main
+from src.menu_item import Side, Drink
 
 class Order():
 	_id = -1

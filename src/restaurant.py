@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod, abstractproperty
-from pickle import dump, load
-from inventory import inventory
-from menu import Menu
-from menu_item import MenuItem
-from order import Order
-
+from pickle import dump
+from src.inventory import inventory
+from src.menu import Menu
+from src.menu_item import MenuItem
+from src.order import Order
 
 
 class Restaurant():

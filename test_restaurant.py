@@ -1,9 +1,9 @@
 import pytest
-from restaurant import Restaurant
-from order import Order
-from inventory_item import inventoryItem
-from inventory import inventory, RemovalError, ItemNotFound
-from main import Burger, Bun
+from src.restaurant import Restaurant
+from src.order import Order
+from src.inventory_item import inventoryItem
+from src.inventory import inventory, RemovalError, ItemNotFound
+from src.main import Burger, Bun
 """
 import sys
 

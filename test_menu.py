@@ -1,8 +1,8 @@
 import pytest
-from menu import Menu, ItemNotFound
-from menu_item import MenuItem, InvalidFieldError
-from main import Burger
-from inventory_item import inventoryItem
+from src.menu import Menu, ItemNotFound
+from src.menu_item import MenuItem, InvalidFieldError
+from src.main import Burger
+from src.inventory_item import inventoryItem
 
 inv_item = inventoryItem("test item", 100)
 

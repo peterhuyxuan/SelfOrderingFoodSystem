@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod,abstractproperty
-from menu_item import Patty, OtherIngredient, Bun, MenuItem
+from src.menu_item import Patty, OtherIngredient, Bun, MenuItem
 
 class Main(ABC):
     _id = 0
