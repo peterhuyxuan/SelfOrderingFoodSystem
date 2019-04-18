@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div>
+  <h1>OrderID: {{ order.id }}</h1>
+  <h2>Status: {{ order.status }}</h2>
+</div>
+
+{% for main in order.mains %}
+<div>
+  <legend>main.name ${{ main.price }}</legend>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </thead>
+    <tbody>
+    {% for item,qty in main.component %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ menu.get_item(name).price }}/ea</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+</div>
+{% endfor %}
+
+<div>
+<legend>Sides & Drinks</legend>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </thead>
+    <tbody>
+    {% for name,qty in order.others %}
+      <tr>
+        <td>{{ name }}</td>
+        <td>{{ qty }}</td>
+        <td>${{ menu.get_item(name).price }}/ea</td>
+      </tr>
+    {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+<span>Total: {{ order.total_price }}</span>
+{% endblock %}

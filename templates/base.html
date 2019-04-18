@@ -16,18 +16,14 @@
 <body>
 
 <!-- Tab Menu -->
-<a href="{{ url_for('menu') }}">Menu</a>
-<br>
-<a href="{{ url_for('order') }}">Order</a>
-<br>
+<a href="{{ url_for('menu') }}">Menu</a><br>
+<a href="{{ url_for('my_order') }}">My Order</a><br>
 <h1>Peter, Alex and Lin's Online Restaurant!</h1>
 <img src="http://clipart-library.com/images/8i686d76T.jpg" width="150px" height="150px"/>
-<br/>
-<br/>
 
 <!-- Main Content -->
 <div class="content center-content">
-{% block body %}
+    {% block body %}
 </div>
 {% endblock %}
 

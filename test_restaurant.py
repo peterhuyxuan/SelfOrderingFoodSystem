@@ -52,9 +52,11 @@ def restaurant_fixture():
 
 class TestUS1_1(object):
     def test_number_of_main(self, restaurant_fixture):
-        assert len(restaurant_fixture.menu.mains) == 2
-        assert "Burger" in restaurant_fixture.menu.mains
-        assert "Wrap" in restaurant_fixture.menu.mains
+        assert len(restaurant_fixture.menu.mains) == 4
+        assert "Custom Burger" in restaurant_fixture.menu.mains
+        assert "Custom Wrap" in restaurant_fixture.menu.mains
+        assert "Base Burger" in restaurant_fixture.menu.mains
+        assert "Base Wrap" in restaurant_fixture.menu.mains
 
 """
 US1.2, 1.3 1.4 are handled in test_burger.py 
@@ -100,11 +102,11 @@ class TestUS2_2:
         order.add_main(burger)
         restaurant_fixture.place_order(order)
         print(order.id)
-        restaurant_fixture.checkout(0)
+        restaurant_fixture.checkout(1)
         assert restaurant_fixture.inventory.items[0].quantity == 98
         assert restaurant_fixture.inventory.items[1].quantity == 99
         assert restaurant_fixture.inventory.items[2].quantity == 99
-        assert len(restaurant_fixture.orders) == 0
+        assert len(restaurant_fixture.orders) == 1
 
     def test_checkout_sides_and_drink(self, restaurant_fixture):
         order = Order()
@@ -113,12 +115,12 @@ class TestUS2_2:
         order.add_others(coke, 1)
         order.add_others(nugget, 1)
         restaurant_fixture.place_order(order)
-        restaurant_fixture.checkout(0)
+        restaurant_fixture.checkout(1)
         chick_inv = restaurant_fixture.inventory.get_item("Chicken Nugget")
         coke_inv = restaurant_fixture.inventory.get_item("Coke")
         assert chick_inv.quantity == 94
         assert coke_inv.quantity == 99
-        assert len(restaurant_fixture.orders) == 0
+        assert len(restaurant_fixture.orders) == 1
 
     def test_checkout_all(self, restaurant_fixture):
         order = Order()
@@ -138,10 +140,10 @@ class TestUS2_2:
         order.add_others(nugget, 1)
         #placing the order and checking out
         restaurant_fixture.place_order(order)
-        restaurant_fixture.checkout(0)
+        restaurant_fixture.checkout(1)
         assert restaurant_fixture.inventory.items[0].quantity == 98
         assert restaurant_fixture.inventory.items[1].quantity == 99
         assert restaurant_fixture.inventory.items[2].quantity == 99
         assert restaurant_fixture.inventory.items[3].quantity == 99
         assert restaurant_fixture.inventory.items[4].quantity == 94
-        assert len(restaurant_fixture.orders) == 0
+        assert len(restaurant_fixture.orders) == 1

@@ -5,7 +5,7 @@ from src.menu_item import Side, Drink
 class Order():
 	_id = -1
 	def __init__(self):
-		self._order_done = False
+		self._status= "Not Yet Confirmed"
 		self._total_price = 0
 		self._others = {}
 		self._mains = []
@@ -56,8 +56,10 @@ class Order():
 			self._total_price -= qty * item.price
 				
 	def mark_finished(self):
-		self._order_done = True
+		self._status = "Ready for Pickup"
 
+	def mark_placed(self):
+		self._status= "Preparing your order"
 	@classmethod
 	def _reset_id(cls):
 		cls._id = -1
@@ -72,8 +74,8 @@ class Order():
 			
 	# properties
 	@property
-	def order_done(self):
-		return self._order_done
+	def status(self):
+		return self._status
 	
 	@property
 	def total_price(self):

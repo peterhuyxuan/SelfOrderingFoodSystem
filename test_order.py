@@ -144,6 +144,6 @@ def test_remove_main(order_fixture):
 
 # test if order is complete
 def test_order_complete(order_fixture):
-    assert order_fixture._order_done == False
+    assert order_fixture.status == 'Not Yet Confirmed'
     order_fixture.mark_finished()
-    assert order_fixture._order_done == True
+    assert order_fixture.status == 'Ready for Pickup'

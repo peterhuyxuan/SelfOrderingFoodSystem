@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+<ul>
+{% for name,mapped_func in mains %}
+  <div>
+    <li>
+      <a href="{{url_for(mapped_func) }}">{{name}}</a>
+    </li>
+  </div>
+{% endfor %}
+</ul>
+{% endblock %}

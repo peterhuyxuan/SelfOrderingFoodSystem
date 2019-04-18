@@ -11,9 +11,12 @@ class Restaurant():
 		self._orders = []
 		self._inventory = inventory()
 		self._menu = Menu()
+		self._current_order = Order()
 	
 	def place_order(self, order):
+		order.mark_placed()
 		self._orders.append(order)
+		self._current_order = Order()
 		return order
 
 	def change_order_status(self, order_id):
@@ -30,7 +33,7 @@ class Restaurant():
 		if order is None or len(order) == 0:
 			raise ValueError(f"{order} has no items to checkout or is None") 
 		order.mark_finished()
-		for item_name, quantity  in order.others.items():
+		for item_name, quantity in order.others.items():
 			menu_item = self.menu.get_item(item_name)
 			inv_item = menu_item.component
 			self._inventory.consume_stock(inv_item.id, quantity * menu_item.component_qty)
@@ -42,7 +45,6 @@ class Restaurant():
 				self._inventory.consume_stock(inv_item.id, quantity * menu_item.component_qty)
 		
 		# reduce_inventory
-		self.remove_order(order_id)
 
 	def get_order(self, order_id):
 		for order in self._orders:
@@ -66,3 +68,7 @@ class Restaurant():
 	@property
 	def menu(self):
 		return self._menu
+
+	@property
+	def current_order(self):
+		return self._current_order

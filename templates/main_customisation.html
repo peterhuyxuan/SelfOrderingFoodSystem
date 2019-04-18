@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block body %}
+<Form method="POST">
+    <legend>Buns</legend>
+    {%for bun in menu.buns %}
+    <div>
+        {% if bun.component.quantity > 0 %}
+            <label>{{ bun.name }}</label>
+            <label>${{ bun.price }}</label>
+            <input name="{{ bun.name }}" type="number"> 
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <legend>Patty</legend>
+    {%for patty in menu.patties %}
+    <div>
+        {% if patty.component.quantity > 0 %}
+            <label>{{ patty.name }}</label>
+            <label>${{ patty.price }}</label>
+            <input name="{{ patty.name }}" type="number"> 
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <legend>Patty</legend>
+    {%for patty in menu.patties %}
+    <div>
+        {% if patty.component.quantity > 0 %}
+            <label>{{ patty.name }}</label>
+            <label>${{ patty.price }}</label>
+            <input name="{{ patty.name }}" type="number"> 
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <legend>Other Ingredients</legend>
+    {%for other in menu.other_ingredients %}
+    <div>
+        {% if other.component.quantity > 0 %}
+            <label>{{ other.name }}</label>
+            <label>${{ other.price }}</label>
+            <input name="{{ other.name }}" type="number"> 
+        {% endif %}
+    </div>
+    {% endfor %}
+</Form>
+{% endblock %}

@@ -4,7 +4,7 @@ from src.main import Main
 class Menu():
  
     def __init__(self):
-        self._main = ("Burger", "Wrap")
+        self._main = ("Base Burger", "Base Wrap", "Custom Burger", "Custom Wrap")
         self._buns = []
         self._patties = []
         self._other_ingredients = []
