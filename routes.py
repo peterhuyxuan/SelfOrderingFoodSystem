@@ -53,6 +53,14 @@ def my_order():
                 return redirect(url_for('order_detail', order_id = order_id))
             else:
                 errors['other'] = 'You cnanot place an empty order'
+
+        elif "Remove" in request.form['submit']:
+            print(request.form['submit'])
+            index = int(request.form['submit'][6::])
+            selected_main = system.current_order.mains[index]
+            print(selected_main)
+            system.current_order.mains.remove(selected_main)
+
     return render_template('order_detail.html', order = system.current_order, menu=system.menu, confirmed=False, errors = errors)
 
 # ==========Menu Details==========
@@ -83,7 +91,9 @@ def sides():
                 try:
                     system.current_order.add_others(item, qty)
                 except (ValueError, TypeError) as e:
-                    errors[name] = e.__str__()
+                        errors[name] = e.__str__()
+            if len(items) == 0:
+                errors['other'] = 'You cannot submit an empty selection'
             if len(errors) == 0:
                 return redirect(url_for('index', msg='Selected sides has been added to your order'))
         elif request.form['submit'] == 'Back':
@@ -213,7 +223,7 @@ def form_handler(form):
     data_dict = {}
     for item_name, qty in form.items():
         if item_name != 'submit':
-            if len(qty) != 0  and int(qty) > 0:
+            if len(qty) != 0 and int(qty) != 0:
                 data_dict[item_name] = int(qty)
 
     return data_dict

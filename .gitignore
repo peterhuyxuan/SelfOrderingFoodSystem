@@ -5,3 +5,4 @@ system.dat
 inv.dat
 order.dat
 .DS_Store
+venv/

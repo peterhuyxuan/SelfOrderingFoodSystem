@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 {% block body %}
-<Form method="POST">
+<Form method="POST" class="pure-form pure-form-aligned">
 {% for item in menu_items %}
-    <div>
     {% if item.component.quantity > 0 %}
-        <label>{{ item.name }}</label>
-        <label>${{ item.price }}</label>
-        <input name="{{ item.name }}" type="number" value="{{ form[item.name] }}"><br/> 
-        {% if errors[item.name] %} <font style="color: red">{{ errors[item.name] }}</font>{% endif %}  
+        <div class='pure-g input-spacing'>
+            <div class="pure-u-1-3"><label>{{ item.name }}</label></div>
+            <div class="pure-u-1-3"><label>${{ item.price }}</label></div>
+            <div><input name="{{ item.name }}" type="number" value="{% if form %}{{ form[item.name] }}{% else %}0{% endif %}"></div>
+        </div>
+        {% if errors[item.name] %} <p class="pure-form-message" style="color: red">{{ errors[item.name] }}</p>{% endif %}
     {% endif %}
-    </div>
 {% endfor %}
-    <input name='submit' value="Add to my order" type="submit">
-    <input name='submit' value="Back" type="submit">
+{% if errors['other'] %}<br><span style="color:firebrick">{{ errors['other'] }}<span><br>{% endif %}
+    <input class='pure-button pure-button-primary' name='submit' value="Add to my order" type="submit">
+    <input class='pure-button' name='submit' value="Back" type="submit">
+  
 </Form>
+
 {% endblock %}

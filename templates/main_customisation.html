@@ -1,43 +1,43 @@
 {% extends 'base.html' %}
 {% block body %}
-<Form method="POST">
-    <legend>Buns</legend>
+<Form method="POST" class = 'pure-form'>
+    <legend class="form-section-heading">Buns</legend>
     {% if errors['min_buns'] %}<font style="color: red;">{{ errors['min_buns'] }}</font><br/>{% endif %}
     {%for bun in menu.buns %}
-    <div>
+    <div class='pure-g'>
         {% if bun.component.quantity > 0 %}
-            <label>{{ bun.name }}</label>
-            <label>${{ bun.price }}</label>
-            <input name="{{ bun.name }}" type="number" value= '{{ form[bun.name] }}'> 
-            {% if errors[bun.name] %}<font style="color: red;">{{ errors[bun.name] }}</font><br/>{% endif %}
+            <div class='pure-u-1-3 input-spacing'><label>{{ bun.name }}</label></div> 
+            <div class='pure-u-1-3 input-spacing'><label>${{ bun.price }}</label></div>
+            <div class='pure-u-1-3 input-spacing'><input name="{{ bun.name }}" type="number" value= '{{ form[bun.name] }}'></div>
         {% endif %}
+        {% if errors[bun.name] %}<font style="color: red;">{{ errors[bun.name] }}</font><br/>{% endif %}
     </div>
     {% endfor %}
 
-    <legend>Patty</legend>
+    <legend class="form-section-heading">Patty</legend>
     {% if errors['min_patties'] %}<font style="color: red;">{{ errors['min_patties'] }}</font><br/>{% endif %}
     {%for patty in menu.patties %}
-    <div>
+    <div class='pure-g'>
         {% if patty.component.quantity > 0 %}
-            <label>{{ patty.name }}</label>
-            <label>${{ patty.price }}</label>
-            <input name="{{ patty.name }}" type="number" value="{{ form[patty.name] }}"> 
-            {% if errors[patty.name] %}<font style="color: red;">{{ errors[patty.name] }}</font><br/>{% endif %}
+        <div class='pure-u-1-3 input-spacing'><label>{{ patty.name }}</label></div>
+        <div class='pure-u-1-3 input-spacing'><label>${{ patty.price }}</label></div>
+        <div class='pure-u-1-3 input-spacing'><input name="{{ patty.name }}" type="number" value="{{ form[patty.name] }}"></div>
         {% endif %}
+        {% if errors[patty.name] %}<span style="color: red;">{{ errors[patty.name] }}</span><br>{% endif %}
     </div>
     {% endfor %}
 
-    <legend>Other Ingredients</legend>
+    <legend class='form-section-heading'>Other Ingredients</legend>
     {%for other in menu.other_ingredients %}
-    <div>
+    <div class='pure-g'>
         {% if other.component.quantity > 0 %}
-            <label>{{ other.name }}</label>
-            <label>${{ other.price }}</label>
-            <input name="{{ other.name }}" type="number" value="{{ form[other.name]}}"> 
-            {% if errors[other.name] %}<font style="color: red;">{{ errors[other.name] }}</font><br/>{% endif %}
+        <div class='pure-u-1-3 input-spacing'><label>{{ other.name }}</label></div>
+        <div class='pure-u-1-3 input-spacing'><label>${{ other.price }}</label></div>
+        <div class='pure-u-1-3 input-spacing'><input name="{{ other.name }}" type="number" value="{{ form[other.name]}}"></div>
         {% endif %}
     </div>
+    {% if errors[other.name] %}<font style="color: red;">{{ errors[other.name] }}</font><br/>{% endif %}
     {% endfor %}
-    <button>Add to My Order</button>
+    <button class="pure-button">Add to My Order</button>
 </Form>
 {% endblock %}

@@ -167,3 +167,13 @@ aside {
  .center-content {
      text-align:center
  }
+
+ .input-spacing {
+     margin: 7.5px auto;
+ }
+
+ .form-section-heading {
+     text-align: left !important;
+     font-size: 20px;
+     font-weight: bold;
+ }

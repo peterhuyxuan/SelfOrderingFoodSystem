@@ -16,7 +16,7 @@
 <body>
 
 <!-- Tab Menu -->
-<div class="pure-menu pure-menu-horizontal" style="background: silver">
+<div class="pure-menu pure-menu-horizontal" style="background: #a7cdf9">
     <span class="pure-menu-heading">Restaurant</span>
     <ul class="pure-menu-list">
         <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('menu') }}">Menu</a></li>
@@ -25,7 +25,8 @@
 </div>
     
 <div class="header">
-    <h1>Peter, Alex and Lin's Online Restaurant!</h1>
+    <h1>Gourmet Restaurant</h1>
+    <img src="{{url_for('static', filename='logo.png')}}" alt="logo" width="130px" height="130px"/  >
 </div>
 <!-- Main Content -->
 <div class="content center-content">
