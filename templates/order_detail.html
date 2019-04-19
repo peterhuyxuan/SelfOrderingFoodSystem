@@ -3,7 +3,7 @@
 
   <div class="header">
     <h1>OrderID: {{ order.id }}</h1>
-    <h2>Status: {{ order.status }}</h2>
+    <h2>Status: <span style="font-weight: bold">{{ order.status }}</span></h1>
   </div>
   <form method="POST" class="pure-form">
     <h2>Mains</h2>
@@ -29,18 +29,18 @@
           {% endif %}
         </div>
         <div class="pure-u-1-3">${{ menu.get_item(name).price }}/ea</div>
-          {% if errors[field_name] %}<font style="color: red">{{ errors[field_name] }}</font>{% endif %}
       </div>
+      {% if errors[field_name] %}<font style="color: red">{{ errors[field_name] }}</font>{% endif %}
       {% endfor %}
     </div>
-    {% if not confirmed %}<input class='pure-button' type="submit" value='Remove' name='submit' id = '{{ counter-1 }}' onclick="addID{{counter-1}}()">{% endif %}
+    {% if not confirmed %}<input class='pure-button' type="submit" value='Remove' name='submit' id = '{{ counter-1 }}' onclick="addID({{ counter - 1 }})">{% endif %}
     
-    <script>
-      function addID{{counter-1}}() {
-        document.getElementById('{{ counter-1 }}').value='Remove-{{ counter-1 }}'
-      }
-    </script>
   {% endfor %}
+  <script>
+    function addID(val) {
+      document.getElementById(val.toString()).value='Remove-' + val.toString()
+    }
+  </script>
   <div style='margin-bottom: 15px'>
     <h2>Sides & Drinks</h2>
       <div class = 'pure-g'>
@@ -69,5 +69,5 @@
     <input class="pure-button" value="Update order" type="submit" name='submit'>
     {% endif %} 
   </form>
-  <span>Total: {{ order.total_price }}</span>
+  <span>Total: ${{ order.total_price }}</span>
   {% endblock %}

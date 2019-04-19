@@ -1,7 +1,7 @@
 from server import system, app
 from flask import render_template, redirect, url_for, request, abort
 from src.main import Burger, Wrap, InvalidQuantityException
-import re 
+from copy import deepcopy
 @app.route('/')
 def index():
     msg = request.args.get('msg') or None
@@ -20,38 +20,16 @@ def my_order():
         errors = {}
         mains, others = handle_order_update(request.form)
         if request.form['submit'] == 'Update order':
-            for compsite_name, qty in mains.items():
-                main_index = int(compsite_name[0])
-                item_name = compsite_name[2::]
-                item = system.menu.get_item(item_name)
-                if qty > 0:
-                    try:
-                        system.current_order.mains[main_index].update_qty(item, qty)
-                    except (InvalidQuantityException, ValueError) as e:
-                        errors['main-' + compsite_name] = e.__str__()
-                if qty == 0:
-                    try:
-                        system.current_order.mains[main_index].remove_item(item)
-                    except ValueError as e:
-                        errors[str(main_index)+'other'] = e.__str__()
-                
-            for name, qty in others.items():
-                item = system.menu.get_item(name)
-                if qty > 0:
-                    try:
-                        system.current_order.update_other(item, qty)
-                    except ValueError as e:
-                        errors['other-'+name] = e.__str__()
-                if qty == 0:
-                    system.current_order.remove_other(item)
+            errors = update_order(mains, others)
 
         elif request.form['submit'] == 'Place order':
-            if len(system.current_order) > 0:
+            errors = update_order(mains, others)
+            if len(system.current_order) > 0 and len(errors) == 0:
                 order_id = system.current_order.id
                 system.place_order(system.current_order)
                 system.reset_current_order()
                 return redirect(url_for('order_detail', order_id = order_id))
-            else:
+            elif len(system.current_order) == 0:
                 errors['other'] = 'You cnanot place an empty order'
 
         elif "Remove" in request.form['submit']:
@@ -128,7 +106,7 @@ def drinks():
 
 @app.route('/menu/mains/base_burger')
 def base_burger():
-    system.current_order.add_main(system.base_burger)
+    system.current_order.add_main(deepcopy(system.base_burger))
     return redirect(url_for("index", msg = 'A base burger has been added to order'))
 
 @app.route('/menu/mains/custom_burger', methods = ['POST', 'GET'])
@@ -169,7 +147,7 @@ def custom_burger():
 
 @app.route('/menu/mains/base_wrap')
 def base_wrap():
-    system.current_order.add_main(system.base_wrap)
+    system.current_order.add_main(deepcopy(system.base_wrap))
     return redirect(url_for("index", msg = 'A base wrap has been added to order'))
 
 @app.route('/menu/mains/custom_wrap', methods = ['POST', 'GET'])
@@ -244,3 +222,32 @@ def shutdown_server():
     if func is None:
         raise RuntimeError('Not running with werkzeug server')
     func()
+
+def update_order(mains, others):
+    errors = {}
+    for compsite_name, qty in mains.items():
+        main_index = int(compsite_name[0])
+        item_name = compsite_name[2::]
+        item = system.menu.get_item(item_name)
+        if qty > 0:
+            try:
+                system.current_order.mains[main_index].update_qty(item, qty)
+            except (InvalidQuantityException, ValueError) as e:
+                errors['main-' + compsite_name] = e.__str__()
+        elif qty == 0:
+            try:
+                system.current_order.mains[main_index].remove_item(item)
+            except ValueError as e:
+                errors[str(main_index)+'other'] = e.__str__()
+    
+    for name, qty in others.items():
+        item = system.menu.get_item(name)
+        if qty > 0:
+            try:
+                system.current_order.update_other(item, qty)
+            except ValueError as e:
+                errors['other-'+name] = e.__str__()
+        if qty == 0:
+            system.current_order.remove_other(item)
+
+    return errors
