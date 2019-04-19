@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block body %}
 {% if msg %}<font>{{ msg }}</font><br>{% endif %}
-<a href="{{ url_for('mains') }}">Mains</a>
-<a href="{{ url_for('sides') }}">Sides</a>
-<a href="{{ url_for('drinks') }}">Drinks</a>
+<div class="pure-menu custom-restricted-width">
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('mains') }}">Mains</a></li>
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('sides') }}">Sides</a></li>
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('drinks') }}">Drinks</a></li>
+    </ul>   
+</div>
 {% endblock %}

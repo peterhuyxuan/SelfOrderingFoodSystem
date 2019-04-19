@@ -16,11 +16,17 @@
 <body>
 
 <!-- Tab Menu -->
-<a href="{{ url_for('menu') }}">Menu</a><br>
-<a href="{{ url_for('my_order') }}">My Order</a><br>
-<h1>Peter, Alex and Lin's Online Restaurant!</h1>
-<img src="http://clipart-library.com/images/8i686d76T.jpg" width="150px" height="150px"/>
-
+<div class="pure-menu pure-menu-horizontal" style="background: silver">
+    <span class="pure-menu-heading">Restaurant</span>
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('menu') }}">Menu</a></li>
+        <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('my_order') }}">My Order</a></li>
+    </ul>
+</div>
+    
+<div class="header">
+    <h1>Peter, Alex and Lin's Online Restaurant!</h1>
+</div>
 <!-- Main Content -->
 <div class="content center-content">
     {% block body %}

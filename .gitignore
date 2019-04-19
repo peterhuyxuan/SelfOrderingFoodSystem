@@ -2,3 +2,6 @@ __pycache__/
 .pytest_cache/
 .vscode/
 system.dat
+inv.dat
+order.dat
+.DS_Store
