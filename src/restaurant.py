@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod, abstractproperty
-from pickle import dump
+from pickle import dump, load
 from src.inventory import inventory
 from src.menu import Menu
 from src.menu_item import MenuItem
@@ -12,11 +12,12 @@ class Restaurant():
 		self._inventory = inventory()
 		self._menu = Menu()
 		self._current_order = Order()
-	
+		self._base_burger = None
+		self._base_wrap = None
+
 	def place_order(self, order):
 		order.mark_placed()
 		self._orders.append(order)
-		self._current_order = Order()
 		return order
 
 	def change_order_status(self, order_id):
@@ -52,10 +53,31 @@ class Restaurant():
 				return order
 		return None
 			
-	def save(self):
-		with open('system.dat', 'wb') as f:
-			dump(self, f)
-			 	
+	def dump_inventory(self):
+		with open('inv.dat', 'wb') as f:
+			dump(self._inventory, f)
+	
+	def dump_order(self):
+		with open('order.dat', 'wb') as f:
+			dump(self._orders,f)
+			print(self._orders)
+
+	def load_data(self):
+		with open('order.dat', 'rb') as f:
+			self._orders = load(f)
+			# make id  continues to count
+			Order.assign_id(len(self._orders))
+			# update id of current order
+			self._current_order._id = len(self._orders)
+			print(self._orders)
+		with open('inv.dat', 'rb') as f:
+			self._inventory = load(f)
+
+	def reset_current_order(self):
+		self._current_order = None
+		order = Order()
+		self._current_order = order
+
 	# properties
 	@property
 	def orders(self):
@@ -72,3 +94,19 @@ class Restaurant():
 	@property
 	def current_order(self):
 		return self._current_order
+
+	@property
+	def base_burger(self):
+		return self._base_burger
+
+	@property
+	def base_wrap(self):
+		return self._base_wrap
+
+	@base_burger.setter
+	def base_burger(self, burger):
+		self._base_burger = burger
+
+	@base_wrap.setter
+	def base_wrap(self, wrap):
+		self._base_wrap = wrap

@@ -2,34 +2,27 @@
 {% block body %}
 <Form method="POST">
     <legend>Buns</legend>
+    {% if errors['min_buns'] %}<font style="color: red;">{{ errors['min_buns'] }}</font><br/>{% endif %}
     {%for bun in menu.buns %}
     <div>
         {% if bun.component.quantity > 0 %}
             <label>{{ bun.name }}</label>
             <label>${{ bun.price }}</label>
-            <input name="{{ bun.name }}" type="number"> 
+            <input name="{{ bun.name }}" type="number" value= '{{ form[bun.name] }}'> 
+            {% if errors[bun.name] %}<font style="color: red;">{{ errors[bun.name] }}</font><br/>{% endif %}
         {% endif %}
     </div>
     {% endfor %}
 
     <legend>Patty</legend>
+    {% if errors['min_patties'] %}<font style="color: red;">{{ errors['min_patties'] }}</font><br/>{% endif %}
     {%for patty in menu.patties %}
     <div>
         {% if patty.component.quantity > 0 %}
             <label>{{ patty.name }}</label>
             <label>${{ patty.price }}</label>
-            <input name="{{ patty.name }}" type="number"> 
-        {% endif %}
-    </div>
-    {% endfor %}
-
-    <legend>Patty</legend>
-    {%for patty in menu.patties %}
-    <div>
-        {% if patty.component.quantity > 0 %}
-            <label>{{ patty.name }}</label>
-            <label>${{ patty.price }}</label>
-            <input name="{{ patty.name }}" type="number"> 
+            <input name="{{ patty.name }}" type="number" value="{{ form[patty.name] }}"> 
+            {% if errors[patty.name] %}<font style="color: red;">{{ errors[patty.name] }}</font><br/>{% endif %}
         {% endif %}
     </div>
     {% endfor %}
@@ -40,9 +33,11 @@
         {% if other.component.quantity > 0 %}
             <label>{{ other.name }}</label>
             <label>${{ other.price }}</label>
-            <input name="{{ other.name }}" type="number"> 
+            <input name="{{ other.name }}" type="number" value="{{ form[other.name]}}"> 
+            {% if errors[other.name] %}<font style="color: red;">{{ errors[other.name] }}</font><br/>{% endif %}
         {% endif %}
     </div>
     {% endfor %}
+    <button>Add to My Order</button>
 </Form>
 {% endblock %}

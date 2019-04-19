@@ -69,16 +69,25 @@ class Main(ABC):
         
     def remove_item(self, item):
         if item.name in self._components.keys():
-            qty = self._components.pop(item.name)
-            self._price  -= item.price * qty
+            qty = self._components[item.name]
             if isinstance(item, Bun):
-                self._num_buns -= qty
-                self.check_min_buns()
+                if self._num_buns - qty < self._min_buns():
+                    raise ValueError(f"you need to have at least {self._min_buns()} buns")
+                else:
+                    self._num_buns -= qty
+                    self._price -= qty * item.price
+                    del self._components[item.name]
             elif isinstance(item, Patty):
-                self._num_patties -= qty
-                self.check_min_patties()
+                if self._num_patties - qty < self._min_patties():
+                    raise ValueError(f"You need to have at least {self._min_patties()} patties")
+                else: 
+                    self._num_patties -= qty
+                    self._price -= qty * item.price
+                    del self._components[item.name]
             elif isinstance(item, OtherIngredient):
                 self._num_others -= qty
+                self._price -= qty * item.price
+                del self._components[item.name]
         else:
             raise ValueError(f"{item} not found in components")
 
@@ -183,11 +192,19 @@ class Main(ABC):
         pass
     
     @abstractmethod
-    def check_min_buns(self):
+    def _min_patties(self):
         pass
     
     @abstractmethod
-    def check_min_patties(self):
+    def _min_buns(self):
+        pass
+    
+    @abstractmethod
+    def check_min_buns(self, new_val = None):
+        pass
+    
+    @abstractmethod
+    def check_min_patties(self, new_val = None):
         pass
 
 
@@ -209,12 +226,19 @@ class Burger(Main):
         if self._num_buns < 2:
             raise ValueError("you need to have at least 2 bun")
 
+
     def check_min_patties(self):
         if self._num_patties < 1:
             raise ValueError("you need to have at least 1 patty")
             
     def __str__(self):
         return "Burger " + super().__str__()
+    
+    def _min_patties(self):
+        return 1
+    
+    def _min_buns(self):
+        return 2
 
 
 class Wrap(Main):
@@ -240,6 +264,12 @@ class Wrap(Main):
     def check_min_patties(self):
         if self._num_patties < 1:
             raise ValueError("you need to have at least 1 patty")
+        
+    def _min_patties(self):
+        return 1
+    
+    def _min_buns(self):
+        return 1
 
 
 class InvalidQuantityException(Exception):

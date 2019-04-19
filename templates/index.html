@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body %}
-
+{% if msg %}<font>{{ msg }}</font><br>{% endif %}
 <a href="{{ url_for('mains') }}">Mains</a>
 <a href="{{ url_for('sides') }}">Sides</a>
 <a href="{{ url_for('drinks') }}">Drinks</a>

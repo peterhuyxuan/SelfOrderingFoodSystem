@@ -1,9 +1,11 @@
 from server import system, app
-from flask import render_template, redirect, url_for, request
-
+from flask import render_template, redirect, url_for, request, abort
+from src.main import Burger, Wrap, InvalidQuantityException
+import re 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    msg = request.args.get('msg') or None
+    return render_template('index.html', msg = msg)
 
 # =========index tabs==========
 
@@ -11,9 +13,47 @@ def index():
 def menu():
     return redirect(url_for('index'))
 
-@app.route('/my_order')
+@app.route('/my_order', methods = ['POST','GET'])
 def my_order():
-    return render_template('order_detail.html', order = system._current_order, menu=system.menu)
+    errors = None
+    if request.method == 'POST':
+        errors = {}
+        mains, others = handle_order_update(request.form)
+        if request.form['submit'] == 'Update order':
+            for compsite_name, qty in mains.items():
+                main_index = int(compsite_name[0])
+                item_name = compsite_name[2::]
+                item = system.menu.get_item(item_name)
+                if qty > 0:
+                    try:
+                        system.current_order.mains[main_index].update_qty(item, qty)
+                    except (InvalidQuantityException, ValueError) as e:
+                        errors['main-' + compsite_name] = e.__str__()
+                if qty == 0:
+                    try:
+                        system.current_order.mains[main_index].remove_item(item)
+                    except ValueError as e:
+                        errors[str(main_index)+'other'] = e.__str__()
+                
+            for name, qty in others.items():
+                item = system.menu.get_item(name)
+                if qty > 0:
+                    try:
+                        system.current_order.update_other(item, qty)
+                    except ValueError as e:
+                        errors['other-'+name] = e.__str__()
+                if qty == 0:
+                    system.current_order.remove_other(item)
+
+        elif request.form['submit'] == 'Place order':
+            if len(system.current_order) > 0:
+                order_id = system.current_order.id
+                system.place_order(system.current_order)
+                system.reset_current_order()
+                return redirect(url_for('order_detail', order_id = order_id))
+            else:
+                errors['other'] = 'You cnanot place an empty order'
+    return render_template('order_detail.html', order = system.current_order, menu=system.menu, confirmed=False, errors = errors)
 
 # ==========Menu Details==========
 
@@ -30,37 +70,167 @@ def mains():
 
 @app.route('/menu/sides', methods=['POST', 'GET'])
 def sides():
-    return render_template('menu_list.html', menu_items=system.menu.sides)
+    errors = None 
+    form = None
+    if request.method == 'POST':
+        if request.form['submit'] == 'Add to my order':
+            form = request.form
+            errors = {}
+            items = form_handler(request.form)
+            print(items)
+            for name,qty in items.items():
+                item = system.menu.get_item(name)
+                try:
+                    system.current_order.add_others(item, qty)
+                except (ValueError, TypeError) as e:
+                    errors[name] = e.__str__()
+            if len(errors) == 0:
+                return redirect(url_for('index', msg='Selected sides has been added to your order'))
+        elif request.form['submit'] == 'Back':
+            return redirect(url_for('index'))
+    return render_template('menu_list.html', menu_items=system.menu.sides, errors = errors, form = form)
 
-@app.route('/menu/drinks')
+@app.route('/menu/drinks', methods = ['POST', 'GET'])
 def drinks():
-    return render_template('menu_list.html', menu_items=system.menu.drinks)
+    errors = None 
+    form = None
+    if request.method == 'POST':
+        if request.form['submit'] == 'Add to my order':
+            errors = {}
+            form = request.form
+            items = form_handler(request.form)
+            print(items)
+            for name,qty in items.items():
+                item = system.menu.get_item(name)
+                try:
+                    system.current_order.add_others(item, qty)
+                except (ValueError, TypeError) as e:
+                    errors[name] = e.__str__()
+
+            if len(items) == 0:
+                errors['other'] = 'You cannot submit an empty selection'
+            if len(errors) == 0:
+                return redirect(url_for('index', msg = 'Selected drinks are added to your order'))
+        elif request.form['submit'] == 'Back':
+            return redirect(url_for('index'))
+
+    return render_template('menu_list.html', menu_items=system.menu.drinks,errors = errors, form = form)
 
 @app.route('/menu/mains/base_burger')
 def base_burger():
-    # add business logic
-    return 'base_burger'
+    system.current_order.add_main(system.base_burger)
+    return redirect(url_for("index", msg = 'A base burger has been added to order'))
 
-@app.route('/menu/mains/custom_burger')
+@app.route('/menu/mains/custom_burger', methods = ['POST', 'GET'])
 def custom_burger():
-    return render_template('main_customisation.html', menu=system.menu)
+    errors = None 
+    form = None
+    if request.method == 'POST':
+        errors = {}
+        form = request.form
+        burger = Burger()
+        items = form_handler(request.form)
+        for name, qty in items.items():
+            item = system.menu.get_item(name)
+            try:
+                burger.add_item(item, qty)
+            except InvalidQuantityException as e:
+                errors[name] = e.__str__()
+        
+        try:
+            burger.check_min_buns()
+        except ValueError as e:
+            errors['min_buns'] = e.__str__()
+
+        try:
+            burger.check_min_patties()
+        except ValueError as e:
+            errors['min_patties'] = e.__str__()
+
+        if len(items) == 0:
+            errors['others'] = 'You cannot have an empty burger'
+            
+
+        if len(errors) == 0:
+            system.current_order.add_main(burger)
+            return redirect(url_for('index', msg = 'the customised burger has been added to your order'))
+
+    return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form)
 
 @app.route('/menu/mains/base_wrap')
 def base_wrap():
-    return 'base_wrap'
+    system.current_order.add_main(system.base_wrap)
+    return redirect(url_for("index", msg = 'A base wrap has been added to order'))
 
-@app.route('/menu/mains/custom_burger')
+@app.route('/menu/mains/custom_wrap', methods = ['POST', 'GET'])
 def custom_wrap():
-    return render_template('main_customisation.html', menu=system.menu)
+    errors = None 
+    form = None
+    if request.method == 'POST':
+        errors = {}
+        form = request.form
+        wrap = Wrap()
+        items = form_handler(request.form)
+        for name, qty in items.items():
+            item = system.menu.get_item(name)
+            try:
+                wrap.add_item(item, qty)
+            except InvalidQuantityException as e:
+                errors[name] = e.__str__()
+        
+        try:
+            wrap.check_min_buns()
+        except ValueError as e:
+            errors['min_buns'] = e.__str__()
+
+        try:
+            wrap.check_min_patties()
+        except ValueError as e:
+            errors['min_patties'] = e.__str__()
+
+        if len(errors) == 0:
+            system.current_order.add_main(burger)
+            return redirect(url_for('index', msg = 'the customised burger has been added to your order'))
+
+    return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form)
 
 @app.route('/orders/<order_id>')
 def order_detail(order_id):
-    return render_template('order_detail.html', order = system._current_order, menu=system.menu)
+    order_id = int(order_id)
+    order = system.get_order(order_id)
+    if (order is None):
+        abort(404)
+    return render_template('order_detail.html', order = order, menu=system.menu, confirmed = True, errors = None)
+
+@app.route('/shutdown')
+def shutdown():
+    system.dump_inventory()
+    system.dump_order()
+    shutdown_server()
+    return "Server shutting down"
 
 def form_handler(form):
     data_dict = {}
-    for item_name, qty in form:
-        if qty > 0:
-            data_dict[item_name] = qty
+    for item_name, qty in form.items():
+        if item_name != 'submit':
+            if len(qty) != 0  and int(qty) > 0:
+                data_dict[item_name] = int(qty)
 
     return data_dict
+ 
+def handle_order_update(form):
+    main_items = {}
+    other_items = {}
+    for name, qty in form.items():
+        if 'main-' in name:
+            main_items[name.replace('main-', '')] = int(qty)
+        elif 'other-' in name:
+            other_items[name.replace('other-', '')] = int(qty)
+
+    return (main_items, other_items)
+
+def shutdown_server(): 
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with werkzeug server')
+    func()
