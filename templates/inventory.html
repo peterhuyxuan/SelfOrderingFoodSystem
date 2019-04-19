@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+<div style="margin-top: 20px">
+    <form method="POST">
+        <div>
+            <h1>Inventory</h1>
+            <div>
+                <label>
+                    {% for item in inventory}
+                    <Item: {{inventory.name}} | Quantity: {{inventory.quantity><br>
+                    Restock Amount:<input name="{{ inventory.name }}" type="number"><br>
+                    {% end for %}
+                </label>
+                <input name="submit" value="Restock Supplies" type="submit">
+                <input name="submit" value="Back" type="submit">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% end block %}
