@@ -8,10 +8,10 @@
         {% if bun.component.quantity > 0 %}
             <div class='pure-u-1-3 input-spacing'><label>{{ bun.name }}</label></div> 
             <div class='pure-u-1-3 input-spacing'><label>${{ bun.price }}</label></div>
-            <div class='pure-u-1-3 input-spacing'><input name="{{ bun.name }}" type="number" value= '{{ form[bun.name] }}'></div>
+            <div class='pure-u-1-3 input-spacing'><input name="{{ bun.name }}" type="number" value= '{{ form[bun.name] }}' {% if review %}readonly{% endif %}></div>
         {% endif %}
-        {% if errors[bun.name] %}<font style="color: red;">{{ errors[bun.name] }}</font><br/>{% endif %}
     </div>
+    {% if errors[bun.name] %}<font style="color: red;">{{ errors[bun.name] }}</font><br/>{% endif %}
     {% endfor %}
 
     <legend class="form-section-heading">Patty</legend>
@@ -21,10 +21,10 @@
         {% if patty.component.quantity > 0 %}
         <div class='pure-u-1-3 input-spacing'><label>{{ patty.name }}</label></div>
         <div class='pure-u-1-3 input-spacing'><label>${{ patty.price }}</label></div>
-        <div class='pure-u-1-3 input-spacing'><input name="{{ patty.name }}" type="number" value="{{ form[patty.name] }}"></div>
+        <div class='pure-u-1-3 input-spacing'><input name="{{ patty.name }}" type="number" value="{{ form[patty.name] }}" {% if review %}readonly{% endif %}></div>
         {% endif %}
-        {% if errors[patty.name] %}<span style="color: red;">{{ errors[patty.name] }}</span><br>{% endif %}
     </div>
+    {% if errors[patty.name] %}<span style="color: red;">{{ errors[patty.name] }}</span><br>{% endif %}
     {% endfor %}
 
     <legend class='form-section-heading'>Other Ingredients</legend>
@@ -33,11 +33,17 @@
         {% if other.component.quantity > 0 %}
         <div class='pure-u-1-3 input-spacing'><label>{{ other.name }}</label></div>
         <div class='pure-u-1-3 input-spacing'><label>${{ other.price }}</label></div>
-        <div class='pure-u-1-3 input-spacing'><input name="{{ other.name }}" type="number" value="{{ form[other.name]}}"></div>
+        <div class='pure-u-1-3 input-spacing'><input name="{{ other.name }}" type="number" value="{{ form[other.name]}}" {% if review %}readonly{% endif %}></div>
         {% endif %}
     </div>
     {% if errors[other.name] %}<font style="color: red;">{{ errors[other.name] }}</font><br/>{% endif %}
     {% endfor %}
-    <button class="pure-button">Add to My Order</button>
+    {% if not review %}
+        <input class="pure-button" value='Add to my order' name="submit" type="submit">
+    {% else %}
+        {% if price %}<span>Total Price: ${{price}}</span><br>{% endif %}
+        <input class="pure-button pure-button-primary" value="Confirm" name="submit" type="submit">
+        <input class="pure-button " value="Back" name="submit" type="submit">
+    {% endif %}
 </Form>
 {% endblock %}

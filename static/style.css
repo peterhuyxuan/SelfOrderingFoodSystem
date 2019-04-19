@@ -177,3 +177,7 @@ aside {
      font-size: 20px;
      font-weight: bold;
  }
+
+ .message {
+    color: rgb(80, 220, 96)
+ }
