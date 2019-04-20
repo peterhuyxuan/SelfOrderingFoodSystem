@@ -68,6 +68,10 @@
     <input class="pure-button pure-button-primary" value="Place order" type="submit" name='submit'>
     <input class="pure-button" value="Update order" type="submit" name='submit'>
     {% endif %} 
+    {% if for_staff %}
+    <input class="pure-button pure-button-primary" value="Mark Finished" type="submit" name="submit">
+    <input class="pure-button" type="submit" value="Back" name="submit">
+    {% endif %}
   </form>
   <span>Total: ${{ order.total_price }}</span>
   {% endblock %}
