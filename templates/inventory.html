@@ -8,7 +8,7 @@
                 {% if msg %}<span class="message">{{ msg }}</span><br>{% endif %}
                 {% for item in inventory %}
                 Item: {{item.name}} | Quantity: {{item.quantity}}<br>
-                Restock Amount:<input name="{{ inventory.name }}" type="number" min='0'><br>
+                Restock Amount:<input name="{{ item.name }}" type="number" min='0'><br>
                 {% endfor %}
                 <input name="submit" value="Restock Inventory" type="submit">
                 <input name="submit" value="Back" type="submit">
