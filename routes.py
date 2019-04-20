@@ -213,6 +213,8 @@ def custom_wrap():
 
     return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form)
 
+# =========Customer Order==========
+
 @app.route('/orders/<order_id>')
 def order_detail(order_id):
     order_id = int(order_id)
@@ -220,6 +222,21 @@ def order_detail(order_id):
     if (order is None):
         abort(404)
     return render_template('order_detail.html', order = order, menu=system.menu, confirmed = True, errors = None)
+
+# =======Stuff serving order========
+
+@app.route('/serve_order/<order_id>', methods = ['POST','GET'])
+def serve_order(order_id):
+    order = system.get_order(int(order_id))
+    if request.method == 'POST':
+        system.checkout(int(order_id))
+        return render_template("order_detail.html", order=order, menu=system.menu, confirmed=True, errors=None, for_staff=False)
+    return render_template("order_detail.html", order=order, menu=system.menu, confirmed=True, errors=None, for_staff=True)
+
+@app.route('/manage_orders')
+def order_list():
+    return render_template('order_list.html', orders=system.orders)
+
 
 @app.route('/shutdown')
 def shutdown():
