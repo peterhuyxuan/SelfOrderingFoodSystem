@@ -30,7 +30,7 @@ def my_order():
                 system.reset_current_order()
                 return redirect(url_for('order_detail', order_id = order_id))
             elif len(system.current_order) == 0:
-                errors['other'] = 'You cnanot place an empty order'
+                errors['other'] = 'You cannot place an empty order'
 
         elif "Remove" in request.form['submit']:
             print(request.form['submit'])
@@ -40,6 +40,37 @@ def my_order():
             system.current_order.mains.remove(selected_main)
 
     return render_template('order_detail.html', order = system.current_order, menu=system.menu, confirmed=False, errors = errors)
+
+# ==========Inventory Details==========
+
+@app.route('/inventory', methods = ['POST', 'GET'])
+def inventory():
+    inventory = []
+    errors = None
+    form = None
+    for item in system.inventory._item:
+        inventory.append(item)
+    if request.method == 'POST':
+        if request.form['submit'] == 'Restock Inventory':
+            form = request.form
+            errors = {}
+            items = form_handler(request.form)
+            for name,qty in items:
+                try:
+                    system.inventory.refill_stock_name(name,qty)
+                except (ValueError) as e:
+                    errors[name] = e.__str__()
+            inventory = []
+            for item in system.inventory._item:
+                inventory.append(item)
+            if len(items) == 0:
+                print("error")
+                errors['other'] = 'You cannot submit an empty order form'
+            if len(errors) == 0:
+                return render_template('inventory.html', inventory=inventory, msg='Inventory Restocked!')
+        elif request.form['submit'] == 'Back':
+            return redirect(url_for('index'))
+    return render_template('inventory.html', inventory=inventory, form=form, errors=errors)
 
 # ==========Menu Details==========
 
@@ -118,20 +149,30 @@ def custom_burger():
         form = request.form
         burger = Burger()
         items = form_handler(request.form)
-        burger,errors = add_items_to_main(burger, items)
-        if request.form['submit'] == 'Add to my order':
-            if len(errors)==0:
-                return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=True,  price=burger.price)
-            else:
-                return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=False,  price=None)
-        elif request.form['submit'] == 'Confirm':
-            if len(errors) == 0:
-                system.current_order.add_main(burger)
-                return redirect(url_for('index', msg = 'the customised burger has been added to your order'))
-            else:  
-                return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=False, price=None)
-        elif request.form['submit'] == 'Back':
-            return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=False, price=None)
+        for name, qty in items.items():
+            item = system.menu.get_item(name)
+            try:
+                burger.add_item(item, qty)
+            except InvalidQuantityException as e:
+                errors[name] = e.__str__()
+        
+        try:
+            burger.check_min_buns()
+        except ValueError as e:
+            errors['min_buns'] = e.__str__()
+
+        try:
+            burger.check_min_patties()
+        except ValueError as e:
+            errors['min_patties'] = e.__str__()
+
+        if len(items) == 0:
+            errors['others'] = 'You cannot have an empty burger'
+            
+
+        if len(errors) == 0:
+            system.current_order.add_main(burger)
+            return redirect(url_for('index', msg = 'the customised burger has been added to your order'))
 
     return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form)
 
@@ -149,23 +190,28 @@ def custom_wrap():
         form = request.form
         wrap = Wrap()
         items = form_handler(request.form)
-        wrap,errors = add_items_to_main(wrap, items)
-        if request.form['submit'] == 'Add to my order':
-            if len(errors)==0:
-                return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=True,  price=wrap.price)
-            else:
-                return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=False,  price=None)
-        elif request.form['submit'] == 'Confirm':
-            if len(errors) == 0:
-                system.current_order.add_main(wrap)
-                return redirect(url_for('index', msg = 'the customised burger has been added to your order'))
-            else:  
-                return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=False, price=None)
-        elif request.form['submit'] == 'Back':
-            return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form, review=False, price=None)
+        for name, qty in items.items():
+            item = system.menu.get_item(name)
+            try:
+                wrap.add_item(item, qty)
+            except InvalidQuantityException as e:
+                errors[name] = e.__str__()
+        
+        try:
+            wrap.check_min_buns()
+        except ValueError as e:
+            errors['min_buns'] = e.__str__()
+
+        try:
+            wrap.check_min_patties()
+        except ValueError as e:
+            errors['min_patties'] = e.__str__()
+
+        if len(errors) == 0:
+            system.current_order.add_main(Wrap)
+            return redirect(url_for('index', msg = 'the customised wrap has been added to your order'))
 
     return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form)
-
 
 @app.route('/orders/<order_id>')
 def order_detail(order_id):
@@ -182,7 +228,6 @@ def shutdown():
     shutdown_server()
     return "Server shutting down"
 
-# helper functions
 def form_handler(form):
     data_dict = {}
     for item_name, qty in form.items():
@@ -237,24 +282,3 @@ def update_order(mains, others):
             system.current_order.remove_other(item)
 
     return errors
-
-def add_items_to_main(main, items):
-    errors = {}
-    for name, qty in items.items():
-        item = system.menu.get_item(name)
-        try:
-            main.add_item(item, qty)
-        except InvalidQuantityException as e:
-            errors[name] = e.__str__()
-    
-    try:
-        main.check_min_buns()
-    except ValueError as e:
-        errors['min_buns'] = e.__str__()
-
-    try:
-        main.check_min_patties()
-    except ValueError as e:
-        errors['min_patties'] = e.__str__()
-
-    return (main, errors)

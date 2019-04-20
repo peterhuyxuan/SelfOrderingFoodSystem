@@ -42,6 +42,14 @@ class inventory():
             if id == item.id:
                 item.quantity += quantity
 
+    def refill_stock_name (self, name, quantity):
+        self._check_item_exists(name)
+        if quantity == 0:
+            raise ValueError("Quantity input Cannot be Zero")
+        for item in self._item:
+            if name == item.name:
+                item.quantity += quantity
+
     def consume_stock (self, id, quantity):
         self._check_item_exists(id)
         if quantity == 0:
