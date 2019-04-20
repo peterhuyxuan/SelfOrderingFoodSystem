@@ -45,32 +45,29 @@ def my_order():
 
 @app.route('/inventory', methods = ['POST', 'GET'])
 def inventory():
-    inventory = []
+    #inventory = []
     errors = None
     form = None
-    for item in system.inventory._item:
-        inventory.append(item)
+    #for item in system.inventory._item:
+    #    inventory.append(item)
     if request.method == 'POST':
         if request.form['submit'] == 'Restock Inventory':
             form = request.form
             errors = {}
             items = form_handler(request.form)
-            for item_name,qty in items:
+            for item_name,qty in items.items():
                 try:
                     system.inventory.refill_stock_name(item_name,qty)
                 except (ValueError) as e:
                     errors[name] = e.__str__()
-            inventory = []
-            for item in system.inventory._item:
-                inventory.append(item)
             if len(items) == 0:
                 print("error")
                 errors['other'] = 'You cannot submit an empty order form'
             if len(errors) == 0:
-                return render_template('inventory.html', inventory=inventory, msg='Inventory Restocked!')
+                return render_template('inventory.html', inventory=system.inventory.items, msg='Inventory Restocked!')
         elif request.form['submit'] == 'Back':
             return redirect(url_for('index'))
-    return render_template('inventory.html', inventory=inventory, form=form, errors=errors)
+    return render_template('inventory.html', inventory=system.inventory.items, form=form, errors=errors)
 
 # ==========Menu Details==========
 
