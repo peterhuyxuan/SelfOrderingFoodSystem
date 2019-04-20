@@ -55,9 +55,9 @@ def inventory():
             form = request.form
             errors = {}
             items = form_handler(request.form)
-            for name,qty in items:
+            for item_name,qty in items:
                 try:
-                    system.inventory.refill_stock_name(name,qty)
+                    system.inventory.refill_stock_name(item_name,qty)
                 except (ValueError) as e:
                     errors[name] = e.__str__()
             inventory = []
