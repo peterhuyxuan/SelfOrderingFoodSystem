@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block body %}
+<legend>Incoming Orders</legend>
+    <div class="pure-g">
+        {% for order in orders %}
+        {% if order.status == "Preparing your order" %}
+        <div class="pure-u-1-3">
+            <a  class="pure-menu-link" href="{{url_for('serve_order', order_id = order.id) }}">Order {{order.id}}</a>
+        </div>
+        {% endif %}
+        {% endfor %} 
+    </div>
+{% endblock %}
