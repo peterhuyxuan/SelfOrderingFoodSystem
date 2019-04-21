@@ -205,7 +205,7 @@ def custom_wrap():
             errors['min_patties'] = e.__str__()
 
         if len(errors) == 0:
-            system.current_order.add_main(Wrap)
+            system.current_order.add_main(wrap)
             return redirect(url_for('index', msg = 'the customised wrap has been added to your order'))
 
     return render_template('main_customisation.html', menu=system.menu, errors = errors, form = form)

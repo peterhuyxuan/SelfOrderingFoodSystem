@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 <div style="margin-top: 20px">
-    <form method="POST">
+    <form method="POST" class="pure-form">
         <div>
             <h1>Inventory</h1>
             <div>
@@ -11,15 +11,13 @@
                     <div class="pure-u-1-3" style="font-weight: bold">Quantity Left</div>
                     <div class="pure-u-1-3" style="font-weight: bold">Quantity Restock</div>
                 </div>
+                {% for item in inventory %}
                 <div class="pure-g">
-                    <div style="margin:15px 0px">
-                        {% for item in inventory %}
-                        <div class="pure-u-1-3" >{{item.name}}</div>
-                        <div class="pure-u-1-3" >{{item.quantity}}</div>
-                        <div class="pure-u-1-3" ><input name="{{ item.name }}" type="number" min='0'></div>
-                        {% endfor %}
-                    </div>
+                    <div class="pure-u-1-3 input-spacing" >{{item.name}}</div>
+                    <div class="pure-u-1-3 input-spacing" >{{item.quantity}}</div>
+                    <div class="pure-u-1-3 input-spacing" ><input name="{{ item.name }}" type="number" min='0'></div>
                 </div>
+                {% endfor %}
                 <input class="pure-button pure-button-primary" name="submit" value="Restock Inventory" type="submit">
                 <input class="pure-button" name="submit" value="Back" type="submit">
             </div>
