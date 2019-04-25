@@ -226,8 +226,11 @@ def order_detail(order_id):
 def serve_order(order_id):
     order = system.get_order(int(order_id))
     if request.method == 'POST':
-        system.checkout(int(order_id))
-        return render_template("order_detail.html", order=order, menu=system.menu, confirmed=True, errors=None, for_staff=False)
+        if request.form["submit"] == "Mark Finished":
+            system.checkout(int(order_id))
+            return render_template("order_detail.html", order=order, menu=system.menu, confirmed=True, errors=None, for_staff=False)
+        elif request.form['submit'] == 'Back':
+            return redirect(url_for('order_list'))
     return render_template("order_detail.html", order=order, menu=system.menu, confirmed=True, errors=None, for_staff=True)
 
 @app.route('/manage_orders')
