@@ -1,5 +1,5 @@
 # COMP 1531 Group Project, 19T1
-
+To run the website, use the following command line: python3 run.py
 ### Aims:
 
 The aim of this group project is to enable students to consolidate their knowledge in the fundamental principles of Software Engineering and apply the theoretical concepts to a “hands-on” software engineering problem. The project will enable students to:
